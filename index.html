@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Roshna N | Full Stack Developer</title>
+<meta name="description" content="Roshna N, Full Stack Developer working with Python, FastAPI, React, Node.js, TypeScript and AWS. Based in Kerala, India.">
+<style>
+  :root {
+    --bg: #f7f8fa;
+    --surface: #ffffff;
+    --text: #1b2430;
+    --muted: #5b6676;
+    --line: #e2e6ec;
+    --accent: #0f766e;
+    --accent-soft: #d9f2ee;
+    --shadow: 0 1px 2px rgba(16,24,40,.06), 0 8px 24px rgba(16,24,40,.06);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0e1319;
+      --surface: #161d26;
+      --text: #e8edf3;
+      --muted: #9aa6b5;
+      --line: #263140;
+      --accent: #2dd4bf;
+      --accent-soft: #12332f;
+      --shadow: 0 1px 2px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.3);
+    }
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  .wrap { max-width: 1040px; margin: 0 auto; padding: 0 20px; }
+
+  /* nav */
+  header.nav {
+    position: sticky; top: 0; z-index: 10;
+    background: color-mix(in srgb, var(--bg) 88%, transparent);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--line);
+  }
+  .nav .wrap { display: flex; align-items: center; justify-content: space-between; height: 60px; }
+  .logo { font-weight: 700; letter-spacing: .2px; color: var(--text); }
+  .logo span { color: var(--accent); }
+  .nav ul { display: flex; gap: 22px; list-style: none; margin: 0; padding: 0; }
+  .nav ul a { color: var(--muted); font-size: 15px; }
+  .nav ul a:hover { color: var(--text); text-decoration: none; }
+  @media (max-width: 640px) { .nav ul { gap: 14px; } .nav ul li:nth-child(n+4) { display: none; } }
+
+  /* hero */
+  .hero { padding: 84px 0 64px; }
+  .eyebrow {
+    display: inline-block; font-size: 13px; font-weight: 600; color: var(--accent);
+    background: var(--accent-soft); padding: 4px 12px; border-radius: 999px; margin-bottom: 18px;
+  }
+  .hero h1 { font-size: clamp(34px, 6vw, 56px); line-height: 1.1; margin: 0 0 14px; letter-spacing: -.02em; }
+  .hero p.lead { font-size: clamp(17px, 2.2vw, 20px); color: var(--muted); max-width: 640px; margin: 0 0 28px; }
+  .btns { display: flex; flex-wrap: wrap; gap: 12px; }
+  .btn {
+    display: inline-block; padding: 11px 20px; border-radius: 10px; font-weight: 600; font-size: 15px;
+    border: 1px solid var(--line); color: var(--text); background: var(--surface);
+  }
+  .btn:hover { text-decoration: none; border-color: var(--accent); }
+  .btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+  @media (prefers-color-scheme: dark) { .btn.primary { color: #04201c; } }
+  .facts { display: flex; flex-wrap: wrap; gap: 28px; margin-top: 40px; color: var(--muted); font-size: 14px; }
+  .facts b { display: block; color: var(--text); font-size: 22px; }
+
+  /* hero doodle */
+  .hero-grid { display: grid; grid-template-columns: 1.15fr .85fr; gap: 32px; align-items: center; }
+  .doodle { width: 100%; max-width: 420px; height: auto; justify-self: center; overflow: visible; }
+  .doodle * { transform-box: fill-box; }
+  .float { animation: float 5s ease-in-out infinite; }
+  .tap { animation: tap .45s ease-in-out infinite alternate; }
+  .tap.r { animation-delay: .22s; }
+  .blink { transform-origin: center; animation: blink 4.5s infinite; }
+  .steam { animation: steam 2.4s ease-in-out infinite; opacity: 0; }
+  .steam.s2 { animation-delay: 1.1s; }
+  .twinkle path { transform-origin: center; animation: twinkle 2.6s ease-in-out infinite; }
+  .twinkle path:nth-child(2) { animation-delay: 1.3s; }
+  .cursor { animation: cursor 1s steps(1) infinite; }
+  @keyframes float { 50% { transform: translateY(-9px); } }
+  @keyframes tap { to { transform: translateY(-5px); } }
+  @keyframes blink { 0%, 93%, 100% { transform: scaleY(1); } 96% { transform: scaleY(.1); } }
+  @keyframes steam { 0% { opacity: 0; transform: translateY(6px); } 40% { opacity: .9; } 100% { opacity: 0; transform: translateY(-10px); } }
+  @keyframes twinkle { 50% { transform: scale(.5); opacity: .5; } }
+  @keyframes cursor { 50% { opacity: 0; } }
+  @media (max-width: 800px) {
+    .hero-grid { grid-template-columns: 1fr; }
+    .doodle { max-width: 320px; order: -1; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .float, .tap, .blink, .steam, .twinkle path, .cursor { animation: none; }
+    .steam { opacity: .6; }
+  }
+
+  /* sections */
+  section { padding: 56px 0; border-top: 1px solid var(--line); }
+  h2 { font-size: 28px; margin: 0 0 8px; letter-spacing: -.01em; }
+  .sub { color: var(--muted); margin: 0 0 28px; }
+
+  .grid { display: grid; gap: 18px; }
+  .g2 { grid-template-columns: repeat(2, 1fr); }
+  .g3 { grid-template-columns: repeat(3, 1fr); }
+  @media (max-width: 800px) { .g3 { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 600px) { .g2, .g3 { grid-template-columns: 1fr; } }
+  .card {
+    background: var(--surface); border: 1px solid var(--line); border-radius: 14px;
+    padding: 22px; box-shadow: var(--shadow);
+  }
+  .card h3 { margin: 0 0 8px; font-size: 17px; }
+  .card p { margin: 0; color: var(--muted); font-size: 15px; }
+
+  .about p { max-width: 720px; color: var(--muted); font-size: 17px; margin: 0 0 14px; }
+  .about p b { color: var(--text); }
+
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+  .chip {
+    font-size: 13px; padding: 4px 11px; border-radius: 999px;
+    background: var(--accent-soft); color: var(--accent); font-weight: 600;
+  }
+
+  /* timeline */
+  .tl { position: relative; padding-left: 26px; border-left: 2px solid var(--line); display: grid; gap: 28px; }
+  .tl-item { position: relative; }
+  .tl-item::before {
+    content: ""; position: absolute; left: -33px; top: 7px; width: 12px; height: 12px;
+    border-radius: 50%; background: var(--accent); border: 3px solid var(--bg);
+  }
+  .tl-item h3 { margin: 0; font-size: 18px; }
+  .tl-meta { color: var(--muted); font-size: 14px; margin: 2px 0 10px; }
+  .tl-item ul { margin: 0; padding-left: 18px; color: var(--muted); }
+  .tl-item li { margin-bottom: 6px; }
+
+  footer { border-top: 1px solid var(--line); padding: 28px 0 40px; color: var(--muted); font-size: 14px; text-align: center; }
+  .contact-box { text-align: center; }
+  .contact-box p { color: var(--muted); max-width: 560px; margin: 0 auto 22px; }
+  .contact-box .btns { justify-content: center; }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="wrap">
+    <a class="logo" href="#top">Roshna<span> N</span></a>
+    <nav aria-label="Main">
+      <ul>
+        <li><a href="#about">About</a></li>
+        <li><a href="#skills">Skills</a></li>
+        <li><a href="#experience">Experience</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+  <div class="wrap hero">
+   <div class="hero-grid">
+   <div class="hero-text">
+    <span class="eyebrow">Open to Full Stack, Node.js and React roles</span>
+    <h1>Hi, I'm Roshna.<br>I build full stack web applications.</h1>
+    <p class="lead">Full Stack Developer working with Python, FastAPI, React, Node.js and TypeScript, shipping on AWS and building AI-powered features with LLMs and RAG.</p>
+    <div class="btns">
+      <a class="btn primary" href="#contact">Get in touch</a>
+      <a class="btn" href="Roshnan_Full_Stack_MERN_Developer.pdf" download>Resume: MERN</a>
+      <a class="btn" href="Roshnan_Python_Full_Stack_Developer.pdf" download>Resume: Python</a>
+    </div>
+    <div class="facts">
+      <div><b>2+ years</b>building web apps</div>
+      <div><b>MERN + Python</b>full stack range</div>
+      <div><b>AWS · Docker</b>deployment and CI/CD</div>
+    </div>
+   </div>
+
+   <svg class="doodle" viewBox="0 0 400 360" role="img" aria-label="Cartoon of a woman with glasses coding on a laptop, with floating code windows and a cup of coffee">
+     <circle cx="200" cy="190" r="150" fill="var(--accent-soft)"/>
+
+     <!-- floating code windows -->
+     <g class="float" style="animation-delay:0s">
+       <rect x="14" y="60" width="112" height="64" rx="8" fill="#1e293b"/>
+       <circle cx="26" cy="72" r="3" fill="#f87171"/><circle cx="36" cy="72" r="3" fill="#fbbf24"/><circle cx="46" cy="72" r="3" fill="#34d399"/>
+       <text x="24" y="95" font-family="ui-monospace,Consolas,monospace" font-size="11" fill="#5eead4">def api():</text>
+       <text x="34" y="111" font-family="ui-monospace,Consolas,monospace" font-size="11" fill="#fbbf24">return ok<tspan class="cursor" fill="#e2e8f0">|</tspan></text>
+     </g>
+     <g class="float" style="animation-delay:1.2s">
+       <rect x="286" y="48" width="104" height="52" rx="8" fill="#1e293b"/>
+       <circle cx="298" cy="60" r="3" fill="#f87171"/><circle cx="308" cy="60" r="3" fill="#fbbf24"/><circle cx="318" cy="60" r="3" fill="#34d399"/>
+       <text x="296" y="87" font-family="ui-monospace,Consolas,monospace" font-size="12" fill="#93c5fd">&lt;App /&gt;</text>
+     </g>
+     <g class="float" style="animation-delay:2.2s">
+       <rect x="300" y="140" width="84" height="40" rx="8" fill="#1e293b"/>
+       <text x="312" y="166" font-family="ui-monospace,Consolas,monospace" font-size="13" fill="#5eead4">{ } AWS</text>
+     </g>
+
+     <!-- sparkles -->
+     <g fill="#fbbf24" class="twinkle">
+       <path d="M150 38 l3 8 8 3 -8 3 -3 8 -3 -8 -8 -3 8 -3z"/>
+       <path d="M258 120 l2 5 5 2 -5 2 -2 5 -2 -5 -5 -2 5 -2z"/>
+     </g>
+
+     <!-- desk and plant -->
+     <rect x="30" y="326" width="340" height="14" rx="7" fill="#a16207"/>
+     <rect x="36" y="340" width="10" height="16" rx="3" fill="#854d0e"/>
+     <rect x="354" y="340" width="10" height="16" rx="3" fill="#854d0e"/>
+     <rect x="52" y="300" width="28" height="26" rx="5" fill="#c2410c"/>
+     <path d="M66 300 C50 280 48 266 56 256 C64 268 66 284 66 300z" fill="#16a34a"/>
+     <path d="M66 300 C78 282 86 270 82 258 C72 268 68 284 66 300z" fill="#22c55e"/>
+
+     <!-- coffee -->
+     <g>
+       <rect x="318" y="298" width="28" height="28" rx="5" fill="#f8fafc"/>
+       <path d="M346 306 h6 a6 6 0 0 1 0 14 h-6" fill="none" stroke="#f8fafc" stroke-width="4"/>
+       <path class="steam" d="M326 290 q-5 -8 0 -14" fill="none" stroke="#94a3b8" stroke-width="2.5" stroke-linecap="round"/>
+       <path class="steam s2" d="M338 290 q-5 -8 0 -14" fill="none" stroke="#94a3b8" stroke-width="2.5" stroke-linecap="round"/>
+     </g>
+
+     <!-- person -->
+     <ellipse cx="200" cy="140" rx="50" ry="52" fill="#1f2937"/>
+     <circle cx="200" cy="88" r="17" fill="#1f2937"/>
+     <rect x="188" y="168" width="24" height="26" rx="8" fill="#f1c6a0"/>
+     <path d="M132 330 C132 214 150 188 200 188 C250 188 268 214 268 330z" fill="#0f766e"/>
+     <circle cx="200" cy="142" r="36" fill="#f6cfa9"/>
+     <path d="M162 138 C164 108 188 98 206 100 C224 100 238 114 238 138 C228 124 216 118 200 118 C184 118 172 124 162 138z" fill="#1f2937"/>
+     <g class="blink"><circle cx="186" cy="146" r="3.2" fill="#1f2937"/><circle cx="214" cy="146" r="3.2" fill="#1f2937"/></g>
+     <circle cx="186" cy="146" r="12" fill="none" stroke="#475569" stroke-width="2.5"/>
+     <circle cx="214" cy="146" r="12" fill="none" stroke="#475569" stroke-width="2.5"/>
+     <path d="M198 146 h4" stroke="#475569" stroke-width="2.5"/>
+     <path d="M190 162 q10 9 20 0" fill="none" stroke="#b45309" stroke-width="2.5" stroke-linecap="round"/>
+     <circle cx="175" cy="158" r="4" fill="#f9a8a0" opacity=".55"/><circle cx="225" cy="158" r="4" fill="#f9a8a0" opacity=".55"/>
+
+     <!-- laptop (back of the lid faces us) -->
+     <rect x="124" y="222" width="152" height="94" rx="9" fill="#cbd5e1"/>
+     <rect x="124" y="222" width="152" height="94" rx="9" fill="none" stroke="#94a3b8" stroke-width="2"/>
+     <path d="M200 256 l-9 14 h18z" fill="#fff" opacity=".9"/>
+     <rect x="100" y="316" width="200" height="10" rx="5" fill="#94a3b8"/>
+
+     <!-- arms and typing hands -->
+     <g class="tap l"><rect x="108" y="262" width="16" height="48" rx="8" fill="#0f766e"/><circle cx="116" cy="312" r="8" fill="#f6cfa9"/></g>
+     <g class="tap r"><rect x="276" y="262" width="16" height="48" rx="8" fill="#0f766e"/><circle cx="284" cy="312" r="8" fill="#f6cfa9"/></g>
+   </svg>
+   </div>
+  </div>
+
+  <section id="about">
+    <div class="wrap about">
+      <h2>About</h2>
+      <p class="sub">What I do and how I work.</p>
+      <p>I build both sides of an application: <b>REST APIs and databases</b> on the backend and <b>React interfaces</b> on the front end, then ship them on AWS.</p>
+      <p>I'm currently a UI Developer at <b>SwarmLens Inc</b>, working on an AI-powered risk intelligence platform. Before that I spent nearly two years at <b>Faircode Technologies</b> as a MERN developer, where I was the backend lead on the Sharon Pipes Reward Program.</p>
+      <p>I enjoy debugging production issues, improving performance and working with cross-functional teams to ship maintainable features. My <b>M.Sc. in Data Science</b> gives me a strong base for building AI-driven products.</p>
+    </div>
+  </section>
+
+  <section id="skills">
+    <div class="wrap">
+      <h2>Skills</h2>
+      <p class="sub">The tools I use day to day.</p>
+      <div class="grid g3">
+        <div class="card"><h3>Languages</h3>
+          <div class="chips"><span class="chip">Python</span><span class="chip">JavaScript (ES6+)</span><span class="chip">TypeScript</span></div></div>
+        <div class="card"><h3>Backend &amp; APIs</h3>
+          <div class="chips"><span class="chip">FastAPI</span><span class="chip">Node.js</span><span class="chip">Express.js</span><span class="chip">REST APIs</span><span class="chip">Third-party integrations</span></div></div>
+        <div class="card"><h3>Frontend</h3>
+          <div class="chips"><span class="chip">React.js</span><span class="chip">TypeScript</span><span class="chip">Reusable components</span></div></div>
+        <div class="card"><h3>Databases</h3>
+          <div class="chips"><span class="chip">MongoDB</span><span class="chip">PostgreSQL</span><span class="chip">MySQL</span></div></div>
+        <div class="card"><h3>AWS &amp; DevOps</h3>
+          <div class="chips"><span class="chip">Lambda</span><span class="chip">S3</span><span class="chip">EC2</span><span class="chip">Docker</span><span class="chip">CI/CD</span><span class="chip">Git</span></div></div>
+        <div class="card"><h3>AI Applications</h3>
+          <div class="chips"><span class="chip">LLM integration</span><span class="chip">RAG pipelines</span><span class="chip">AI chat apps</span><span class="chip">Multi-agent systems</span><span class="chip">Prompt engineering</span></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="experience">
+    <div class="wrap">
+      <h2>Experience</h2>
+      <p class="sub">Where I've worked.</p>
+      <div class="tl">
+        <div class="tl-item">
+          <h3>UI Developer · SwarmLens Inc</h3>
+          <div class="tl-meta">Jan 2026 – Present</div>
+          <ul>
+            <li>Integrated FastAPI REST APIs, LLM services and RAG workflows into AI chat interfaces and risk-analysis experiences.</li>
+            <li>Built React and TypeScript features and reusable components for an AI-powered risk intelligence platform.</li>
+            <li>Managed agent data for the platform.</li>
+            <li>Resolved application defects, investigated API/UI issues and improved performance and usability.</li>
+          </ul>
+        </div>
+        <div class="tl-item">
+          <h3>MERN Stack Developer · Faircode Technologies</h3>
+          <div class="tl-meta">Mar 2024 – Jan 2026 · Kochi</div>
+          <ul>
+            <li>Led backend development of the Sharon Pipes Reward Program.</li>
+            <li>Built and integrated REST APIs, database workflows, reusable UI components and third-party services including Cashfree.</li>
+            <li>Developed full-stack applications using MongoDB, Express.js, React.js and Node.js.</li>
+            <li>Optimized performance and memory usage while investigating application issues.</li>
+            <li>Deployed with AWS services, Docker, Git and CI/CD workflows.</li>
+            <li>Integrated OCR and AI-based automation using AWS services.</li>
+          </ul>
+        </div>
+        <div class="tl-item">
+          <h3>MERN Stack Developer · Luminar Technolab</h3>
+          <div class="tl-meta">Jun 2023 – Jan 2024</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="projects">
+    <div class="wrap">
+      <h2>Projects</h2>
+      <p class="sub">Selected work.</p>
+      <div class="grid g2">
+        <div class="card">
+          <h3>AI-Powered Risk Intelligence Platform</h3>
+          <p>React-based interfaces and AI chat functionality built with Generative AI, RAG and LLM workflows. APIs and AI services provide contextual risk insights and recommendations.</p>
+          <div class="chips"><span class="chip">React</span><span class="chip">TypeScript</span><span class="chip">FastAPI</span><span class="chip">LLM</span><span class="chip">RAG</span></div>
+        </div>
+        <div class="card">
+          <h3>Sharon Pipes Reward Program</h3>
+          <p>A rewards application with API and database integration. Led the backend: reward and membership workflows, Cashfree integration and AWS-based OCR receipt scanning.</p>
+          <div class="chips"><span class="chip">React</span><span class="chip">Node.js</span><span class="chip">MongoDB</span><span class="chip">AWS</span><span class="chip">Cashfree</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="education">
+    <div class="wrap">
+      <h2>Education &amp; Certifications</h2>
+      <p class="sub">&nbsp;</p>
+      <div class="grid g2">
+        <div class="card">
+          <h3>M.Sc. in Data Science</h3>
+          <p>University of Kerala · 2019 – 2021</p>
+          <p style="margin-top:10px">B.Sc. in Computer Science · University of Kerala · 2013 – 2016</p>
+        </div>
+        <div class="card">
+          <h3>Certifications</h3>
+          <p>Introduction to TensorFlow for AI, Machine Learning and Deep Learning<br>
+             Architecting with Google Compute Engine Specialization<br>
+             Data Engineering on Google Cloud: Integrate with Machine Learning APIs</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact">
+    <div class="wrap contact-box">
+      <h2>Let's work together</h2>
+      <p>I'm open to Full Stack (Python / MERN), Node.js and React roles. The best way to reach me is by email or LinkedIn.</p>
+      <div class="btns">
+        <a class="btn primary" href="mailto:roshnasharaf123@gmail.com">Email me</a>
+        <a class="btn" href="https://www.linkedin.com/in/roshna-n-3b8b00120/" target="_blank" rel="noopener">LinkedIn</a>
+        <!-- Add your GitHub link here: <a class="btn" href="https://github.com/your-handle" target="_blank" rel="noopener">GitHub</a> -->
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">© <span id="yr">2026</span> Roshna N · Kerala, India</div>
+</footer>
+<script>document.getElementById('yr').textContent = new Date().getFullYear();</script>
+</body>
+</html>
