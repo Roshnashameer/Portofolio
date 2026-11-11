@@ -150,9 +150,18 @@
         position: sticky;
         top: 0;
         z-index: 10;
-        background: color-mix(in srgb, var(--bg) 88%, transparent);
-        backdrop-filter: blur(8px);
-        border-bottom: 1px solid var(--line);
+        background: color-mix(in srgb, var(--bg) 80%, transparent);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border-bottom: 1px solid transparent;
+        transition:
+          border-color 0.3s ease,
+          background 0.3s ease,
+          box-shadow 0.3s ease;
+      }
+      header.nav.scrolled {
+        border-bottom-color: var(--line);
+        box-shadow: 0 1px 20px rgba(0, 0, 0, 0.07);
       }
       .nav .wrap {
         display: flex;
@@ -556,13 +565,18 @@
       }
       .card {
         transition:
-          transform 0.15s ease-out,
-          box-shadow 0.2s;
+          transform 0.22s cubic-bezier(0.2, 0.8, 0.2, 1),
+          box-shadow 0.22s ease,
+          border-color 0.22s ease;
         will-change: transform;
         transform-style: preserve-3d;
       }
       .card:hover {
-        box-shadow: 0 18px 40px rgba(15, 118, 110, 0.18);
+        transform: translateY(-4px);
+        box-shadow:
+          0 12px 32px rgba(15, 118, 110, 0.14),
+          0 0 0 1.5px color-mix(in srgb, var(--accent) 35%, transparent);
+        border-color: color-mix(in srgb, var(--accent) 45%, var(--line));
       }
       .reveal {
         opacity: 0;
@@ -1072,19 +1086,28 @@
 
       /* ===== section mascot ===== */
       .mascot {
-        display: inline-block;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
         vertical-align: middle;
-        font-size: 1.1em;
-        margin-right: 4px;
-        line-height: 1;
+        width: 28px;
+        height: 28px;
+        margin-right: 8px;
+        color: var(--accent);
+        flex-shrink: 0;
       }
       .mascot svg {
-        width: 100%;
-        height: 100%;
+        width: 22px;
+        height: 22px;
+        stroke: currentColor;
+        fill: none;
+        stroke-width: 1.75;
+        stroke-linecap: round;
+        stroke-linejoin: round;
       }
       @keyframes mascotBob {
         50% {
-          transform: translateY(-3px) rotate(4deg);
+          transform: translateY(-3px);
         }
       }
       .mascot {
@@ -1340,21 +1363,28 @@
         transform: none;
       }
       @media (max-width: 480px) {
+        /* full-screen sheet on mobile */
         .ai-window {
           left: 0;
           right: 0;
           bottom: 0;
           width: 100%;
           max-width: 100%;
-          height: 100vh;
-          max-height: 100vh;
+          height: 85vh;
+          max-height: 85vh;
           border-radius: 20px 20px 0 0;
         }
+        /* move FAB to bottom-right so it never overlaps left-side content */
         .ai-fab {
-          width: 56px;
-          height: 56px;
+          width: 52px;
+          height: 52px;
           bottom: 20px;
-          left: 20px;
+          left: auto;
+          right: 20px;
+        }
+        /* shrink the bottom inset when contact section is visible */
+        .ai-fab.near-contact {
+          bottom: 80px;
         }
       }
 
@@ -2435,7 +2465,17 @@
 
       <section id="about">
         <div class="wrap about">
-          <h2><span class="mascot" aria-hidden="true">👋</span>About</h2>
+          <h2>
+            <span class="mascot" aria-hidden="true"
+              ><svg viewBox="0 0 24 24">
+                <path d="M18 11V6l-5-3-5 3v5" />
+                <path d="M3 11v8a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1v-8" />
+                <path d="M12 22v-5" />
+                <path d="M3 11h18" />
+                <path d="M7 11V8" />
+                <path d="M17 11V8" /></svg></span
+            >About
+          </h2>
           <p class="sub">What I do and how I work.</p>
           <p>
             I build both sides of an application:
@@ -2486,7 +2526,35 @@
 
       <section id="skills">
         <div class="wrap">
-          <h2><span class="mascot" aria-hidden="true">🤖</span>Skills</h2>
+          <h2>
+            <span class="mascot" aria-hidden="true"
+              ><svg viewBox="0 0 24 24">
+                <rect x="2" y="3" width="20" height="14" rx="2" />
+                <path d="M8 21h8" />
+                <path d="M12 17v4" />
+                <circle
+                  cx="8"
+                  cy="10"
+                  r="1"
+                  fill="currentColor"
+                  stroke="none"
+                />
+                <circle
+                  cx="12"
+                  cy="10"
+                  r="1"
+                  fill="currentColor"
+                  stroke="none"
+                />
+                <circle
+                  cx="16"
+                  cy="10"
+                  r="1"
+                  fill="currentColor"
+                  stroke="none"
+                /></svg></span
+            >Skills
+          </h2>
           <p class="sub">The tools I use day to day.</p>
           <div class="grid g3">
             <div class="card">
@@ -2547,7 +2615,15 @@
 
       <section id="experience">
         <div class="wrap">
-          <h2><span class="mascot" aria-hidden="true">🚀</span>Experience</h2>
+          <h2>
+            <span class="mascot" aria-hidden="true"
+              ><svg viewBox="0 0 24 24">
+                <rect x="2" y="7" width="20" height="14" rx="2" />
+                <path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2" />
+                <line x1="12" y1="12" x2="12" y2="16" />
+                <line x1="10" y1="14" x2="14" y2="14" /></svg></span
+            >Experience
+          </h2>
           <p class="sub">Where I've worked.</p>
           <div class="tl">
             <div class="tl-item">
@@ -2599,6 +2675,17 @@
             <div class="tl-item">
               <h3>MERN Stack Developer · Luminar Technolab</h3>
               <div class="tl-meta">Jun 2023 – Jan 2024</div>
+              <ul>
+                <li>
+                  Developed and maintained full-stack web applications using
+                  MongoDB, Express.js, React, and Node.js.
+                </li>
+                <li>
+                  Built RESTful APIs and integrated third-party services;
+                  contributed to UI component libraries used across multiple
+                  client projects.
+                </li>
+              </ul>
             </div>
           </div>
         </div>
@@ -2606,7 +2693,14 @@
 
       <section id="projects">
         <div class="wrap">
-          <h2><span class="mascot" aria-hidden="true">💼</span>Projects</h2>
+          <h2>
+            <span class="mascot" aria-hidden="true"
+              ><svg viewBox="0 0 24 24">
+                <path
+                  d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.86 12 19.79 19.79 0 0 1 1.76 3.37 2 2 0 0 1 3.74 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 9.91a16 16 0 0 0 6.1 6.1l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"
+                /></svg></span
+            >Projects
+          </h2>
           <p class="sub">
             Selected work. Much of my work is for industry clients and can't be
             shown publicly, so these are described without confidential details.
@@ -2660,8 +2754,11 @@
       <section id="education">
         <div class="wrap">
           <h2>
-            <span class="mascot" aria-hidden="true">🎓</span>Education &amp;
-            Certifications
+            <span class="mascot" aria-hidden="true"
+              ><svg viewBox="0 0 24 24">
+                <path d="M22 10v6M2 10l10-5 10 5-10 5z" />
+                <path d="M6 12v5c3 3 9 3 12 0v-5" /></svg></span
+            >Education &amp; Certifications
           </h2>
           <p class="sub">&nbsp;</p>
           <div class="grid g2">
@@ -2690,7 +2787,14 @@
 
       <section id="testimonials">
         <div class="wrap">
-          <h2><span class="mascot" aria-hidden="true">💬</span>Testimonials</h2>
+          <h2>
+            <span class="mascot" aria-hidden="true"
+              ><svg viewBox="0 0 24 24">
+                <path
+                  d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"
+                /></svg></span
+            >Testimonials
+          </h2>
           <p class="sub">
             What colleagues and clients say about working with me.
           </p>
@@ -2735,14 +2839,36 @@
       <section id="contact">
         <div class="wrap contact-box">
           <h2>
-            <span class="mascot" aria-hidden="true">✉️</span>Let's work together
+            <span class="mascot" aria-hidden="true"
+              ><svg viewBox="0 0 24 24">
+                <path
+                  d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"
+                />
+                <polyline points="22,6 12,13 2,6" /></svg></span
+            >Let's work together
           </h2>
           <p>
             I'm open to Full Stack (Python / MERN), Node.js and React roles. The
             best way to reach me is by email or LinkedIn — or use the form
             below.
           </p>
-          <form class="form" id="contactForm" novalidate>
+          <!-- Formspree endpoint — replace YOUR_FORM_ID with your Formspree form id -->
+          <form
+            class="form"
+            id="contactForm"
+            action="https://formspree.io/f/YOUR_FORM_ID"
+            method="POST"
+            novalidate
+          >
+            <input type="hidden" name="_subject" value="Portfolio enquiry" />
+            <!-- honeypot anti-spam -->
+            <input
+              type="text"
+              name="_gotcha"
+              style="display: none"
+              tabindex="-1"
+              autocomplete="off"
+            />
             <div class="row2">
               <div>
                 <input
@@ -2772,7 +2898,7 @@
                 type="text"
                 id="f-subject"
                 name="subject"
-                placeholder="Subject"
+                placeholder="Subject (e.g. Job opportunity, Collaboration)"
               />
             </div>
             <div>
@@ -2784,11 +2910,19 @@
               ></textarea>
               <div class="err" id="err-message">Please enter a message</div>
             </div>
-            <button type="submit" class="btn primary submit">
-              Send message
+            <button type="submit" class="btn primary submit" id="form-submit">
+              <span id="form-btn-text">Send message</span>
+              <span id="form-btn-spin" style="display: none">Sending…</span>
             </button>
             <div class="ok" id="form-ok">
-              ✓ Thanks! Your email client should open in a moment.
+              ✓ Message sent! I'll get back to you soon.
+            </div>
+            <div
+              class="err"
+              id="form-err"
+              style="text-align: center; margin-top: 0"
+            >
+              Something went wrong — please email me directly.
             </div>
           </form>
           <p style="margin-top: 24px; font-size: 14px">Or reach me directly:</p>
@@ -3412,11 +3546,26 @@
           })();
         }
 
-        /* scroll progress bar */
+        /* scroll progress bar + nav glassmorphism */
         var prog = document.getElementById("progress");
+        var navEl = document.querySelector("header.nav");
+        var aiFab = document.getElementById("aiToggle");
+        var contactSec = document.getElementById("contact");
         function onScroll() {
           var h = document.documentElement.scrollHeight - innerHeight;
           prog.style.width = (h > 0 ? (scrollY / h) * 100 : 0) + "%";
+
+          /* add .scrolled class to nav once user scrolls past 10px */
+          if (navEl) navEl.classList.toggle("scrolled", scrollY > 10);
+
+          /* nudge FAB up when contact section is near the bottom viewport */
+          if (aiFab && contactSec) {
+            var rect = contactSec.getBoundingClientRect();
+            aiFab.classList.toggle(
+              "near-contact",
+              rect.top < innerHeight && rect.bottom > 0,
+            );
+          }
         }
         addEventListener("scroll", onScroll, { passive: true });
         onScroll();
@@ -3511,7 +3660,7 @@
           });
         }
 
-        /* ---------- Contact form validation ---------- */
+        /* ---------- Contact form — Formspree async submit ---------- */
         var form = document.getElementById("contactForm");
         if (form) {
           var showErr = function (id, show) {
@@ -3522,48 +3671,65 @@
 
           form.addEventListener("submit", function (e) {
             e.preventDefault();
-            var name = document.getElementById("f-name");
-            var email = document.getElementById("f-email");
-            var message = document.getElementById("f-message");
-            var subject = document.getElementById("f-subject");
+
+            /* hide previous status messages */
+            document.getElementById("form-ok").classList.remove("show");
+            document.getElementById("form-err").classList.remove("show");
+
+            var nameEl = document.getElementById("f-name");
+            var emailEl = document.getElementById("f-email");
+            var messageEl = document.getElementById("f-message");
             var ok = true;
 
-            if (!name.value.trim()) {
+            if (!nameEl.value.trim()) {
               showErr("err-name", true);
               ok = false;
             } else showErr("err-name", false);
 
-            if (!emailRe.test(email.value.trim())) {
+            if (!emailRe.test(emailEl.value.trim())) {
               showErr("err-email", true);
               ok = false;
             } else showErr("err-email", false);
 
-            if (!message.value.trim()) {
+            if (!messageEl.value.trim()) {
               showErr("err-message", true);
               ok = false;
             } else showErr("err-message", false);
 
             if (!ok) return;
 
-            var body = encodeURIComponent(
-              message.value.trim() +
-                "\n\n— " +
-                name.value.trim() +
-                " (" +
-                email.value.trim() +
-                ")",
-            );
-            var subj = encodeURIComponent(
-              subject.value.trim() ||
-                "Portfolio enquiry from " + name.value.trim(),
-            );
-            window.location.href =
-              "mailto:roshnasharaf123@gmail.com?subject=" +
-              subj +
-              "&body=" +
-              body;
-            document.getElementById("form-ok").classList.add("show");
-            form.reset();
+            /* show loading state */
+            var btn = document.getElementById("form-submit");
+            var btnText = document.getElementById("form-btn-text");
+            var btnSpin = document.getElementById("form-btn-spin");
+            btn.disabled = true;
+            btnText.style.display = "none";
+            btnSpin.style.display = "inline";
+
+            var data = new FormData(form);
+
+            fetch(form.action, {
+              method: "POST",
+              body: data,
+              headers: { Accept: "application/json" },
+            })
+              .then(function (res) {
+                btn.disabled = false;
+                btnText.style.display = "inline";
+                btnSpin.style.display = "none";
+                if (res.ok) {
+                  document.getElementById("form-ok").classList.add("show");
+                  form.reset();
+                } else {
+                  document.getElementById("form-err").classList.add("show");
+                }
+              })
+              .catch(function () {
+                btn.disabled = false;
+                btnText.style.display = "inline";
+                btnSpin.style.display = "none";
+                document.getElementById("form-err").classList.add("show");
+              });
           });
         }
       })();
@@ -3924,7 +4090,7 @@
                 "<ul>" +
                 "<li><b>UI Developer · SwarmLens Inc</b> (Jan 2026 – Present) — AI-powered risk intelligence platform with React, TypeScript, FastAPI and LLM/RAG workflows.</li>" +
                 "<li><b>MERN Stack Developer · Faircode Technologies</b> (Mar 2024 – Jan 2026, Kochi) — Backend lead on Sharon Pipes Reward Program. Full-stack MERN, AWS, Docker, CI/CD.</li>" +
-                "<li><b>MERN Stack Developer · Luminar Technolab</b> (Jun 2023 – Jan 2024) — MERN stack development.</li>" +
+                "<li><b>MERN Stack Developer · Luminar Technolab</b> (Jun 2023 – Jan 2024) — Full-stack MERN development; built RESTful APIs and React UI components across client projects.</li>" +
                 "</ul>"
               );
             },
