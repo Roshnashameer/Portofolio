@@ -1173,7 +1173,7 @@
       }
 
       /* ===== orbital rings around doodle ===== */
-      .orbit-wrap {
+
       .orbit-wrap {
         position: relative;
         width: 100%;
@@ -1289,6 +1289,188 @@
           opacity: 0.3;
         }
       }
+
+      /* ===== Ask Roshna AI ===== */
+/* ===== Ask Roshna AI ===== */
+.ai-fab{position:fixed;bottom:28px;left:28px;z-index:100;width:62px;height:62px;border-radius:50%;border:0;cursor:pointer;background:linear-gradient(140deg,#0f766e,#14b8a6);color:#fff;font-size:26px;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 24px rgba(15,118,110,.5);transition:transform .2s}
+.ai-fab:hover{transform:scale(1.1)}
+.ai-fab-ping{position:absolute;inset:-2px;border-radius:50%;border:2px solid rgba(20,184,166,.5);animation:aiRing 2s ease-out infinite;pointer-events:none}
+@keyframes aiRing{from{transform:scale(1);opacity:.8}to{transform:scale(1.6);opacity:0}}
+.ai-fab-badge{position:absolute;top:-4px;right:-4px;background:#fbbf24;color:#fff;font:800 9px/1.4 system-ui,sans-serif;padding:2px 5px;border-radius:20px;border:2px solid #fff}
+
+.ai-window{position:fixed;bottom:102px;left:28px;z-index:101;width:390px;max-width:calc(100vw - 56px);height:540px;max-height:calc(100vh - 130px);display:flex;flex-direction:column;overflow:hidden;border-radius:20px;background:var(--surface);border:1px solid var(--line);box-shadow:0 20px 60px rgba(0,0,0,.22);visibility:hidden;opacity:0;pointer-events:none;transform:translateY(14px) scale(.96);transition:opacity .25s,transform .25s,visibility .25s}
+.ai-window.ai-open{visibility:visible;opacity:1;pointer-events:auto;transform:none}
+@media(max-width:480px){.ai-window{left:0;right:0;bottom:0;width:100%;max-width:100%;height:100vh;max-height:100vh;border-radius:20px 20px 0 0}.ai-fab{width:56px;height:56px;bottom:20px;left:20px}}
+
+.ai-head{flex-shrink:0;display:flex;align-items:center;gap:12px;padding:14px 16px;background:linear-gradient(135deg,#095750,#0f766e,#0d9488);color:#fff}
+.ai-head-ava{width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,.18);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
+.ai-head-info{flex:1;min-width:0}
+.ai-head-name{font:700 14.5px system-ui,sans-serif;display:flex;align-items:center;gap:6px}
+.ai-stars{font-size:11px;letter-spacing:1px;opacity:.9}
+.ai-head-status{font-size:11.5px;opacity:.8;display:flex;align-items:center;gap:5px;margin-top:2px}
+.ai-status-dot{width:7px;height:7px;border-radius:50%;background:#4ade80}
+.ai-head-close{width:30px;height:30px;border-radius:50%;border:0;background:rgba(255,255,255,.15);color:#fff;font-size:20px;line-height:1;cursor:pointer;flex-shrink:0}
+.ai-head-close:hover{background:rgba(255,255,255,.3)}
+
+.ai-body{flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:10px;padding:14px 12px;scroll-behavior:smooth}
+.ai-welcome-card{background:var(--accent-soft);border:1px solid var(--line);border-radius:14px;padding:16px;text-align:center}
+.aw-emoji{font-size:34px;display:block;margin-bottom:6px}
+.ai-welcome-card h4{margin:0 0 4px;font:700 14px system-ui,sans-serif;color:var(--text)}
+.ai-welcome-card p{margin:0;font-size:12.5px;color:var(--muted);line-height:1.5}
+
+.ai-row{display:flex;gap:8px;max-width:88%}
+.ai-row-user{align-self:flex-end;flex-direction:row-reverse}
+.ai-row-ava{width:28px;height:28px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:14px;align-self:flex-end;background:var(--accent-soft);border:1px solid var(--line)}
+.ai-bubble{padding:9px 13px;border-radius:14px;font-size:13.5px;line-height:1.55;word-break:break-word;background:var(--accent-soft);color:var(--text);border:1px solid var(--line);border-bottom-left-radius:4px}
+.ai-row-user .ai-bubble{background:linear-gradient(135deg,#0f766e,#14b8a6);color:#fff;border:0;border-bottom-left-radius:14px;border-bottom-right-radius:4px}
+.ai-bubble b{color:var(--accent)}
+.ai-bubble a{color:var(--accent);text-decoration:underline}
+.ai-bubble ul{margin:6px 0 0;padding-left:18px}
+.ai-dots{display:flex;gap:4px;align-items:center}
+.ai-dots span{width:8px;height:8px;border-radius:50%;background:var(--accent);animation:aiTyp 1.2s ease-in-out infinite}
+.ai-dots span:nth-child(2){animation-delay:.15s}.ai-dots span:nth-child(3){animation-delay:.3s}
+@keyframes aiTyp{0%,80%,100%{transform:scale(.7);opacity:.3}40%{transform:scale(1.3);opacity:1}}
+
+.ai-quick{flex-shrink:0;display:flex;flex-wrap:wrap;gap:6px;padding:2px 12px 8px}
+.ai-qbtn{font:500 12px system-ui,sans-serif;padding:6px 12px;border-radius:999px;border:1.5px solid var(--line);background:var(--surface);color:var(--muted);cursor:pointer;transition:all .15s}
+.ai-qbtn:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-soft)}
+
+.ai-bar{flex-shrink:0;padding:10px 12px 6px;border-top:1px solid var(--line)}
+.ai-bar-wrap{display:flex;align-items:center;gap:8px}
+.ai-bar-input{flex:1;min-width:0;padding:10px 14px;border-radius:24px;border:1.5px solid var(--line);background:var(--bg);color:var(--text);font:13.5px system-ui,sans-serif;outline:0}
+.ai-bar-input:focus{border-color:var(--accent)}
+.ai-bar-send{flex-shrink:0;width:38px;height:38px;border-radius:50%;border:0;cursor:pointer;background:linear-gradient(135deg,#0f766e,#14b8a6);color:#fff;display:flex;align-items:center;justify-content:center}
+.ai-bar-send:disabled{opacity:.4;pointer-events:none}
+.ai-bar-send svg{width:15px;height:15px}
+.ai-powered{flex-shrink:0;text-align:center;padding:3px 0 10px;font-size:10.5px;color:var(--muted);display:flex;align-items:center;justify-content:center;gap:5px}
+.ai-powered-dot{width:5px;height:5px;border-radius:50%;background:#4ade80}
+
+@media(prefers-color-scheme:dark){.ai-fab,.ai-bar-send{background:linear-gradient(135deg,#2dd4bf,#5eead4);color:#0a1f1c}.ai-row-user .ai-bubble{background:linear-gradient(135deg,#2dd4bf,#5eead4);color:#0a1f1c}}
+:root[data-theme="dark"] .ai-fab,:root[data-theme="dark"] .ai-bar-send{background:linear-gradient(135deg,#2dd4bf,#5eead4);color:#0a1f1c}
+:root[data-theme="dark"] .ai-row-user .ai-bubble{background:linear-gradient(135deg,#2dd4bf,#5eead4);color:#0a1f1c}
+@media(prefers-reduced-motion:reduce){.ai-fab-ping,.ai-dots span{animation:none}}
+
+      /* messages */
+      .rn-msgs {
+        flex: 1;
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        padding: 14px 12px;
+        scroll-behavior: smooth;
+      }
+      .rn-msgs::-webkit-scrollbar { width: 4px; }
+      .rn-msgs::-webkit-scrollbar-thumb { background: var(--line); border-radius: 2px; }
+
+      /* welcome card */
+      .rn-welcome {
+        background: var(--accent-soft);
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        padding: 16px;
+        text-align: center;
+      }
+      .rn-welcome-em { font-size: 34px; display: block; margin-bottom: 6px; animation: rnBob 2.5s ease-in-out infinite; }
+      @media (prefers-reduced-motion: reduce) { .rn-welcome-em { animation: none; } }
+      @keyframes rnBob { 50% { transform: translateY(-5px); } }
+      .rn-welcome h4 { margin: 0 0 4px; font-size: 14px; font-weight: 700; font-family: system-ui, sans-serif; color: var(--text); }
+      .rn-welcome p { margin: 0; font-size: 12.5px; color: var(--muted); line-height: 1.5; }
+
+      /* message row */
+      .rn-row { display: flex; gap: 8px; max-width: 88%; animation: rnIn .28s ease; }
+      .rn-row-user { align-self: flex-end; flex-direction: row-reverse; }
+      @keyframes rnIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; } }
+      .rn-av { width: 28px; height: 28px; border-radius: 50%; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 14px; align-self: flex-end; }
+      .rn-row .rn-av { background: var(--accent-soft); border: 1px solid var(--line); }
+      .rn-row-user .rn-av { background: var(--accent); color: #fff; font-size: 11px; }
+      @media (prefers-color-scheme: dark) { .rn-row-user .rn-av { color: #0a1f1c; } }
+      :root[data-theme="dark"] .rn-row-user .rn-av { color: #0a1f1c; }
+      .rn-bub {
+        padding: 9px 13px;
+        border-radius: 14px;
+        font-size: 13.5px;
+        line-height: 1.55;
+        word-break: break-word;
+      }
+      .rn-row .rn-bub { background: var(--accent-soft); color: var(--text); border: 1px solid var(--line); border-bottom-left-radius: 4px; }
+      .rn-row-user .rn-bub { background: linear-gradient(135deg, #0f766e, #14b8a6); color: #fff; border-bottom-right-radius: 4px; box-shadow: 0 2px 10px rgba(15,118,110,.3); }
+      @media (prefers-color-scheme: dark) { .rn-row-user .rn-bub { color: #0a1f1c; } }
+      :root[data-theme="dark"] .rn-row-user .rn-bub { color: #0a1f1c; }
+      .rn-bub b { color: var(--accent); }
+      .rn-bub a { color: var(--accent); text-decoration: underline; }
+      .rn-bub ul { margin: 6px 0 0; padding-left: 18px; }
+      .rn-bub li { margin-bottom: 4px; }
+
+      /* typing */
+      .rn-typing { display: flex; gap: 4px; padding: 4px 2px; }
+      .rn-typing span { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); animation: rnTyp 1.2s ease-in-out infinite; }
+      .rn-typing span:nth-child(2) { animation-delay: .15s; }
+      .rn-typing span:nth-child(3) { animation-delay: .3s; }
+      @keyframes rnTyp { 0%,80%,100% { transform: scale(.7); opacity: .3; } 40% { transform: scale(1.3) translateY(-4px); opacity: 1; } }
+
+      /* quick replies */
+      .rn-quick { flex-shrink: 0; display: flex; flex-wrap: wrap; gap: 6px; padding: 2px 12px 8px; }
+      .rn-qbtn {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        font-size: 12px;
+        font-weight: 500;
+        font-family: system-ui, sans-serif;
+        padding: 6px 12px;
+        border-radius: 999px;
+        border: 1.5px solid var(--line);
+        background: var(--surface);
+        color: var(--muted);
+        cursor: pointer;
+        transition: border-color .15s, color .15s, background .15s, transform .12s;
+      }
+      .rn-qbtn:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); transform: translateY(-2px); }
+      .rn-qbtn:active { transform: scale(.95); }
+
+      /* input bar */
+      .rn-bar { flex-shrink: 0; display: flex; align-items: center; gap: 8px; padding: 10px 12px 14px; border-top: 1px solid var(--line); }
+      .rn-inp {
+        flex: 1;
+        padding: 10px 14px;
+        border-radius: 24px;
+        border: 1.5px solid var(--line);
+        background: var(--bg);
+        color: var(--text);
+        font-family: system-ui, sans-serif;
+        font-size: 13.5px;
+        outline: 0;
+        transition: border-color .2s, box-shadow .2s;
+        min-width: 0;
+      }
+      .rn-inp::placeholder { color: var(--muted); }
+      .rn-inp:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(15,118,110,.12); }
+      :root[data-theme="dark"] .rn-inp:focus { box-shadow: 0 0 0 3px rgba(45,212,191,.12); }
+      .rn-send {
+        flex-shrink: 0;
+        width: 38px;
+        height: 38px;
+        border-radius: 50%;
+        border: 0;
+        cursor: pointer;
+        background: linear-gradient(135deg, #0f766e, #14b8a6);
+        color: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: transform .15s, opacity .15s;
+      }
+      .rn-send:hover { transform: scale(1.1); }
+      .rn-send:active { transform: scale(.9); }
+      .rn-send:disabled { opacity: .4; pointer-events: none; }
+      .rn-send svg { width: 15px; height: 15px; }
+      @media (prefers-color-scheme: dark) { .rn-send { background: linear-gradient(135deg, #2dd4bf, #5eead4); color: #0a1f1c; } }
+      :root[data-theme="dark"] .rn-send { background: linear-gradient(135deg, #2dd4bf, #5eead4); color: #0a1f1c; }
+
+      /* powered note */
+      .rn-note { flex-shrink: 0; text-align: center; padding: 3px 0 10px; font-size: 10.5px; color: var(--muted); display: flex; align-items: center; justify-content: center; gap: 5px; }
+      .rn-note-dot { width: 5px; height: 5px; border-radius: 50%; background: #4ade80; }
     </style>
     <script type="application/ld+json">
       {
@@ -2190,6 +2372,77 @@
         <polyline points="18 15 12 9 6 15" />
       </svg>
     </button>
+
+    <!-- Ask Roshna AI -->
+    <button class="ai-fab" id="aiToggle" aria-label="Open Ask Roshna AI">
+      <span class="ai-fab-ping"></span>
+      <span class="ai-fab-badge">AI</span>
+      🤖
+    </button>
+
+    <div
+      class="ai-window"
+      id="aiPanel"
+      role="dialog"
+      aria-label="Ask Roshna AI"
+    >
+      <!-- header -->
+      <div class="ai-head">
+        <div class="ai-head-ava">🤖</div>
+        <div class="ai-head-info">
+          <div class="ai-head-name">
+            Ask Roshna AI
+            <span class="ai-stars">✦✦✦</span>
+          </div>
+          <div class="ai-head-status">
+            <span class="ai-status-dot"></span>
+            Online &middot; Powered by RAG
+          </div>
+        </div>
+        <button class="ai-head-close" id="aiClose" aria-label="Close">
+          &times;
+        </button>
+      </div>
+
+      <!-- messages -->
+      <div class="ai-body" id="aiMessages"></div>
+
+      <!-- quick-reply chips -->
+      <div class="ai-quick" id="aiSuggestions"></div>
+
+      <!-- input bar -->
+      <div class="ai-bar">
+        <div class="ai-bar-wrap">
+          <input
+            class="ai-bar-input"
+            id="aiInput"
+            type="text"
+            autocomplete="off"
+            placeholder="Ask me anything about Roshna…"
+          />
+          <button class="ai-bar-send" id="aiSend" aria-label="Send" disabled>
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <line x1="22" y1="2" x2="11" y2="13" />
+              <polygon points="22 2 15 22 11 13 2 9 22 2" />
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- footer -->
+      <div class="ai-powered">
+        <span class="ai-powered-dot"></span>
+        client-side RAG &middot; no API key needed
+      </div>
+    </div>
+
     <script>
       document.getElementById("yr").textContent = new Date().getFullYear();
     </script>
@@ -3024,6 +3277,738 @@
           });
         })();
       })();
+    </script>
+
+    <script>
+      (function () {
+        /* ================================================================
+         ASK ROSHNA AI — client-side RAG chat assistant
+         Knowledge base + keyword retrieval + template response generation.
+         Can be upgraded to real LLM via the FastAPI backend (see /backend).
+         ================================================================ */
+
+        /* ---------- Knowledge Base ---------- */
+        var KB = [
+          {
+            id: "projects",
+            keywords: [
+              "project",
+              "projects",
+              "work",
+              "built",
+              "built",
+              "portfolio",
+              "showcase",
+              "made",
+              "created",
+              "developed",
+              "application",
+              "app",
+            ],
+            answer: function () {
+              return (
+                "Here are the projects Roshna has worked on:\n" +
+                "<ul>" +
+                "<li><b>AI-Powered Risk Intelligence Platform</b> — React + TypeScript interfaces with AI chat built on Generative AI, RAG and LLM workflows. APIs provide contextual risk insights.</li>" +
+                "<li><b>Sharon Pipes Reward Program</b> — A full-stack rewards app. Roshna led the backend: reward/membership workflows, Cashfree payment integration, and AWS-based OCR receipt scanning. Stack: React, Node.js, MongoDB, AWS.</li>" +
+                "<li><b>Malayalam-English Code-Mixed Data Analysis</b> — A Python NLP notebook analysing code-mixed text. On <a href='https://github.com/Roshnashameer/malayalam-english-code-mixed-data-analysis' target='_blank' rel='noopener'>GitHub</a>.</li>" +
+                "<li><b>Profile Data Scraping</b> — A Python notebook for collecting and processing profile data. On <a href='https://github.com/Roshnashameer/profiledatascrapping' target='_blank' rel='noopener'>GitHub</a>.</li>" +
+                "</ul>"
+              );
+            },
+          },
+          {
+            id: "risk-platform",
+            keywords: [
+              "risk",
+              "intelligence",
+              "swarmlens",
+              "ai chat",
+              "rag",
+              "llm",
+              "generative",
+            ],
+            answer: function () {
+              return (
+                "At <b>SwarmLens Inc</b>, Roshna works on an <b>AI-Powered Risk Intelligence Platform</b>. " +
+                "She integrates FastAPI REST APIs, LLM services and RAG workflows into AI chat interfaces and risk-analysis experiences. " +
+                "The frontend is built with React and TypeScript. The platform provides contextual risk insights and recommendations using Generative AI."
+              );
+            },
+          },
+          {
+            id: "sharon-pipes",
+            keywords: [
+              "sharon",
+              "pipes",
+              "reward",
+              "cashfree",
+              "ocr",
+              "membership",
+              "faircode",
+              "client",
+            ],
+            answer: function () {
+              return (
+                "The <b>Sharon Pipes Reward Program</b> was built at Faircode Technologies. Roshna led the backend:\n" +
+                "<ul>" +
+                "<li>Reward and membership workflows with MongoDB, Express, React and Node.js (MERN stack)</li>" +
+                "<li>Cashfree payment gateway integration</li>" +
+                "<li>AWS-based OCR receipt scanning for automated receipt processing</li>" +
+                "<li>Third-party service integrations and performance optimization</li>" +
+                "</ul>"
+              );
+            },
+          },
+          {
+            id: "react",
+            keywords: [
+              "react",
+              "frontend",
+              "component",
+              "components",
+              "ui",
+              "interface",
+              "typescript",
+              "tsx",
+              "hook",
+            ],
+            answer: function () {
+              return (
+                "Roshna has <b>strong React experience</b> (88% proficiency). She builds:\n" +
+                "<ul>" +
+                "<li>Reusable React components with TypeScript</li>" +
+                "<li>AI chat interfaces and risk-analysis dashboards at SwarmLens</li>" +
+                "<li>Full-stack MERN application frontends at Faircode Technologies</li>" +
+                "</ul>" +
+                "She also works with TypeScript for type-safe development. You can see her React work in the AI-Powered Risk Intelligence Platform and the Sharon Pipes Reward Program."
+              );
+            },
+          },
+          {
+            id: "python-fastapi",
+            keywords: [
+              "python",
+              "fastapi",
+              "api",
+              "apis",
+              "rest",
+              "backend",
+              "server",
+              "endpoint",
+              "py",
+              "django",
+              "flask",
+            ],
+            answer: function () {
+              return (
+                "Yes! Roshna has <b>strong Python and FastAPI experience</b> (90% proficiency). She uses:\n" +
+                "<ul>" +
+                "<li><b>FastAPI</b> for building REST APIs at SwarmLens Inc</li>" +
+                "<li>Python for NLP and data analysis projects (code-mixed text analysis, data scraping)</li>" +
+                "<li>AI/ML integration with Python — LLM services, RAG pipelines</li>" +
+                "</ul>" +
+                "She's comfortable with both Python/FastAPI and Node.js/Express for backend development."
+              );
+            },
+          },
+          {
+            id: "node-mern",
+            keywords: [
+              "node",
+              "nodejs",
+              "express",
+              "mern",
+              "mongodb",
+              "javascript",
+              "backend",
+              "fullstack",
+              "full stack",
+            ],
+            answer: function () {
+              return (
+                "Roshna has <b>3+ years of full-stack experience</b> with the MERN stack (MongoDB, Express.js, React.js, Node.js). " +
+                "At Faircode Technologies she was the backend lead on the Sharon Pipes Reward Program, building REST APIs, database workflows, " +
+                "and third-party integrations including Cashfree payments and AWS OCR services. " +
+                "She also has MERN + AI integration experience, building AI-powered features into full-stack apps."
+              );
+            },
+          },
+          {
+            id: "ai-tech",
+            keywords: [
+              "ai",
+              "artificial",
+              "intelligence",
+              "llm",
+              "rag",
+              "generative",
+              "machine",
+              "learning",
+              "ml",
+              "model",
+              "agent",
+              "agents",
+              "prompt",
+              "chatgpt",
+              "openai",
+              "chatbot",
+              "tensor",
+              "vector",
+            ],
+            answer: function () {
+              return (
+                "Roshna has hands-on <b>AI technology experience</b>:\n" +
+                "<ul>" +
+                "<li><b>LLM integration</b> — building AI chat interfaces with large language models</li>" +
+                "<li><b>RAG pipelines</b> — retrieval-augmented generation for contextual AI responses</li>" +
+                "<li><b>Multi-agent systems</b> — orchestrating multiple AI agents</li>" +
+                "<li><b>Prompt engineering</b> — crafting effective prompts for AI applications</li>" +
+                "<li><b>AI chat apps</b> — building conversational AI interfaces at SwarmLens</li>" +
+                "</ul>" +
+                "Her M.Sc. in Data Science gives her a strong theoretical foundation. She's also certified in TensorFlow and Google Cloud ML."
+              );
+            },
+          },
+          {
+            id: "experience",
+            keywords: [
+              "experience",
+              "work",
+              "job",
+              "jobs",
+              "career",
+              "company",
+              "companies",
+              "role",
+              "roles",
+              "employed",
+              "history",
+              "years",
+            ],
+            answer: function () {
+              return (
+                "Roshna has <b>3+ years</b> of professional experience:\n" +
+                "<ul>" +
+                "<li><b>UI Developer · SwarmLens Inc</b> (Jan 2026 – Present) — AI-powered risk intelligence platform with React, TypeScript, FastAPI and LLM/RAG workflows.</li>" +
+                "<li><b>MERN Stack Developer · Faircode Technologies</b> (Mar 2024 – Jan 2026, Kochi) — Backend lead on Sharon Pipes Reward Program. Full-stack MERN, AWS, Docker, CI/CD.</li>" +
+                "<li><b>MERN Stack Developer · Luminar Technolab</b> (Jun 2023 – Jan 2024) — MERN stack development.</li>" +
+                "</ul>"
+              );
+            },
+          },
+          {
+            id: "skills",
+            keywords: [
+              "skill",
+              "skills",
+              "tech",
+              "technology",
+              "technologies",
+              "tools",
+              "stack",
+              "know",
+              "languages",
+              "framework",
+              "frameworks",
+              "databases",
+              "devops",
+            ],
+            answer: function () {
+              return (
+                "Roshna's technical skills:\n" +
+                "<ul>" +
+                "<li><b>Languages:</b> Python (90%), JavaScript/TypeScript (85%)</li>" +
+                "<li><b>Backend & APIs:</b> FastAPI (90%), Node.js/Express (85%), REST APIs, third-party integrations</li>" +
+                "<li><b>Frontend:</b> React.js (88%), TypeScript, reusable components</li>" +
+                "<li><b>Databases:</b> MongoDB (90%), PostgreSQL/MySQL (80%)</li>" +
+                "<li><b>AWS & DevOps:</b> Lambda, S3, EC2 (82%), Docker, CI/CD, Git (80%)</li>" +
+                "<li><b>AI Applications:</b> LLM integration, RAG pipelines, multi-agent systems, prompt engineering</li>" +
+                "</ul>"
+              );
+            },
+          },
+          {
+            id: "education",
+            keywords: [
+              "education",
+              "degree",
+              "university",
+              "college",
+              "study",
+              "studied",
+              "qualification",
+              "qualifications",
+              "academic",
+              "school",
+              "kerala",
+            ],
+            answer: function () {
+              return (
+                "Roshna's education:\n" +
+                "<ul>" +
+                "<li><b>M.Sc. in Data Science</b> — University of Kerala (2019 – 2021)</li>" +
+                "<li><b>B.Sc. in Computer Science</b> — University of Kerala (2013 – 2016)</li>" +
+                "</ul>" +
+                "Certifications: TensorFlow for AI/ML/DL, Google Compute Engine Specialization, Google Cloud Data Engineering with ML APIs."
+              );
+            },
+          },
+          {
+            id: "contact",
+            keywords: [
+              "contact",
+              "email",
+              "reach",
+              "linkedin",
+              "github",
+              "hire",
+              "available",
+              "phone",
+              "connect",
+              "social",
+              "message",
+            ],
+            answer: function () {
+              return (
+                "You can reach Roshna through:\n" +
+                "<ul>" +
+                "<li><b>Email:</b> <a href='mailto:roshnasharaf123@gmail.com'>roshnasharaf123@gmail.com</a></li>" +
+                "<li><b>LinkedIn:</b> <a href='https://www.linkedin.com/in/roshna-n-3b8b00120/' target='_blank' rel='noopener'>linkedin.com/in/roshna-n</a></li>" +
+                "<li><b>GitHub:</b> <a href='https://github.com/Roshnashameer' target='_blank' rel='noopener'>github.com/Roshnashameer</a></li>" +
+                "</ul>" +
+                "She's based in Kerala, India and is open to Full Stack (Python / MERN), Node.js and React roles."
+              );
+            },
+          },
+          {
+            id: "about",
+            keywords: [
+              "about",
+              "who",
+              "rosna",
+              "roshna",
+              "herself",
+              "bio",
+              "background",
+              "tell",
+              "introduce",
+              "developer",
+              "person",
+            ],
+            answer: function () {
+              return (
+                "Roshna N is a <b>Full Stack Developer</b> based in Kerala, India, with 3+ years of experience. " +
+                "She builds both sides of an application — REST APIs and databases on the backend, React interfaces on the front end — and ships on AWS. " +
+                "She's currently a UI Developer at <b>SwarmLens Inc</b>, working on an AI-powered risk intelligence platform with LLMs and RAG. " +
+                "Her M.Sc. in Data Science gives her a strong foundation for building AI-driven products."
+              );
+            },
+          },
+          {
+            id: "availability",
+            keywords: [
+              "available",
+              "hire",
+              "hiring",
+              "open",
+              "looking",
+              "job",
+              "seeking",
+              "freelance",
+              "work",
+              "role",
+              "position",
+            ],
+            answer: function () {
+              return (
+                "Yes! Roshna is <b>open to Full Stack (Python / MERN), Node.js and React roles</b>. " +
+                "She's available for hire and you can reach her via <a href='mailto:roshnasharaf123@gmail.com'>email</a> or <a href='https://www.linkedin.com/in/roshna-n-3b8b00120/' target='_blank' rel='noopener'>LinkedIn</a>."
+              );
+            },
+          },
+          {
+            id: "aws-devops",
+            keywords: [
+              "aws",
+              "cloud",
+              "docker",
+              "devops",
+              "ci",
+              "cd",
+              "pipeline",
+              "deploy",
+              "deployment",
+              "lambda",
+              "s3",
+              "ec2",
+              "infrastructure",
+            ],
+            answer: function () {
+              return (
+                "Roshna has solid <b>AWS and DevOps experience</b> (82%):\n" +
+                "<ul>" +
+                "<li><b>AWS:</b> Lambda, S3, EC2 — used for serverless functions, storage and compute</li>" +
+                "<li><b>Docker</b> for containerization</li>" +
+                "<li><b>CI/CD</b> pipelines for automated deployment</li>" +
+                "<li>AWS-based OCR and AI automation services</li>" +
+                "</ul>" +
+                "She deployed the Sharon Pipes Reward Program using AWS, Docker, Git and CI/CD workflows."
+              );
+            },
+          },
+          {
+            id: "greeting",
+            keywords: [
+              "hi",
+              "hello",
+              "hey",
+              "greetings",
+              "good",
+              "morning",
+              "evening",
+              "sup",
+              "yo",
+              "namaste",
+            ],
+            answer: function () {
+              var greetings = [
+                "Hi there! 👋 I'm Roshna's AI assistant. Ask me about her projects, skills, experience, or how to contact her!",
+                "Hello! 🤖 I can answer questions about Roshna's work, tech stack, and experience. What would you like to know?",
+                "Hey! 😊 I'm here to help you learn about Roshna N — Full Stack Developer. Try one of the suggested questions below!",
+              ];
+              return greetings[Math.floor(Math.random() * greetings.length)];
+            },
+          },
+          {
+            id: "thanks",
+            keywords: [
+              "thank",
+              "thanks",
+              "great",
+              "awesome",
+              "cool",
+              "nice",
+              "appreciate",
+              "good job",
+            ],
+            answer: function () {
+              return "You're welcome! 😊 Feel free to ask more questions, or reach out to Roshna directly via email or LinkedIn. Good luck with your search!";
+            },
+          },
+        ];
+
+        /* ---------- Stop words for retrieval ---------- */
+        var STOP = new Set([
+          "the",
+          "a",
+          "an",
+          "is",
+          "are",
+          "was",
+          "were",
+          "be",
+          "been",
+          "being",
+          "have",
+          "has",
+          "had",
+          "do",
+          "does",
+          "did",
+          "will",
+          "would",
+          "could",
+          "should",
+          "may",
+          "might",
+          "must",
+          "can",
+          "of",
+          "in",
+          "on",
+          "at",
+          "to",
+          "for",
+          "with",
+          "from",
+          "by",
+          "as",
+          "about",
+          "into",
+          "through",
+          "during",
+          "and",
+          "or",
+          "but",
+          "not",
+          "no",
+          "if",
+          "then",
+          "else",
+          "when",
+          "where",
+          "why",
+          "how",
+          "what",
+          "which",
+          "who",
+          "whom",
+          "this",
+          "that",
+          "these",
+          "those",
+          "i",
+          "you",
+          "he",
+          "she",
+          "it",
+          "we",
+          "they",
+          "me",
+          "him",
+          "her",
+          "us",
+          "them",
+          "my",
+          "your",
+          "his",
+          "its",
+          "our",
+          "their",
+          "mine",
+          "yours",
+          "hers",
+          "ours",
+          "theirs",
+          "s",
+          "t",
+          "d",
+          "ll",
+          "ve",
+          "re",
+          "m",
+          "am",
+          "any",
+          "all",
+          "some",
+          "more",
+          "most",
+          "such",
+          "only",
+          "own",
+          "same",
+          "so",
+          "than",
+          "too",
+          "very",
+          "just",
+        ]);
+        function tokenize(q) {
+          return q
+            .toLowerCase()
+            .replace(/[^a-z0-9\s+#]/g, " ")
+            .split(/\s+/)
+            .filter(function (w) {
+              return w.length > 1 && !STOP.has(w);
+            });
+        }
+
+        /* ---------- Retrieval: score KB entries by keyword overlap ---------- */
+        function retrieve(question) {
+          var tokens = tokenize(question);
+          if (!tokens.length) return null;
+          var scored = KB.map(function (entry) {
+            var score = 0;
+            tokens.forEach(function (t) {
+              entry.keywords.forEach(function (kw) {
+                if (kw === t) score += 3;
+                else if (kw.indexOf(t) > -1 || t.indexOf(kw) > -1) score += 1;
+              });
+            });
+            return { entry: entry, score: score };
+          });
+          scored.sort(function (a, b) {
+            return b.score - a.score;
+          });
+          return scored[0].score > 0 ? scored[0].entry : null;
+        }
+
+        /* ---------- Response generation ---------- */
+        function generateAnswer(question) {
+          var entry = retrieve(question);
+          if (!entry) {
+            return "I'm not sure about that one! 🤔 I can answer questions about Roshna's <b>projects, skills, experience, education, AI technologies</b>, and <b>contact info</b>. Try one of the suggested questions below!";
+          }
+          return entry.answer();
+        }
+
+        /* ---------- Chat UI ---------- */
+        var toggle = document.getElementById("aiToggle");
+        var panel = document.getElementById("aiPanel");
+        var closeBtn = document.getElementById("aiClose");
+        var messagesEl = document.getElementById("aiMessages");
+        var inputEl = document.getElementById("aiInput");
+        var sendBtn = document.getElementById("aiSend");
+        var suggestionsEl = document.getElementById("aiSuggestions");
+        var isOpen = false;
+        var reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+        var suggestions = [
+          { icon: "💼", text: "What projects has Roshna worked on?" },
+          { icon: "⚛️", text: "What is her experience with React?" },
+          { icon: "🐍", text: "Does she have Python and FastAPI experience?" },
+          { icon: "🧠", text: "What AI technologies has she used?" },
+          { icon: "✉️", text: "How can I contact her?" },
+        ];
+
+
+        function botReply(question) {
+          showTyping();
+          sendBtn.disabled = true;
+
+          if (window.ASK_ROSHNA_API) {
+            fetch(window.ASK_ROSHNA_API, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ question: question }),
+            })
+              .then(function (r) { return r.json(); })
+              .then(function (data) {
+                hideTyping();
+                sendBtn.disabled = false;
+                addMsg(data.answer || generateAnswer(question), "bot");
+              })
+              .catch(function () {
+                hideTyping();
+                sendBtn.disabled = false;
+                addMsg(generateAnswer(question), "bot");
+              });
+            return;
+          }
+
+          var delay = reduce ? 200 : 600 + Math.random() * 500;
+          setTimeout(function () {
+            hideTyping();
+            sendBtn.disabled = false;
+            addMsg(generateAnswer(question), "bot");
+          }, delay);
+        }
+
+        function send() {
+          var text = inputEl.value.trim();
+          if (!text) return;
+          addMsg(escapeHtml(text), "user");
+          inputEl.value = "";
+          inputEl.focus();
+          sendBtn.disabled = true;
+          hideSuggestions();
+          botReply(text);
+        }
+
+        function escapeHtml(s) {
+          return s
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;");
+        }
+
+        function hideSuggestions() {
+          suggestionsEl.style.display = "none";
+        }
+
+        function showSuggestions() {
+          suggestionsEl.style.display = "flex";
+          suggestionsEl.innerHTML = "";
+          suggestions.forEach(function (s) {
+            var b = document.createElement("button");
+            b.className = "ai-qbtn";
+            b.innerHTML = s.icon + " " + s.text;
+            b.addEventListener("click", function () {
+              addMsg(s.text, "user");
+              hideSuggestions();
+              botReply(s.text);
+            });
+            suggestionsEl.appendChild(b);
+          });
+        }
+
+        function openPanel() {
+          isOpen = true;
+          panel.classList.add("ai-open");
+          toggle.style.visibility = "hidden";
+          if (messagesEl.children.length === 0) {
+            var card = document.createElement("div");
+            card.className = "ai-welcome-card";
+            card.innerHTML =
+              '<span class="aw-emoji">🤖</span>' +
+              "<h4>Hey there! I'm Ask Roshna AI</h4>" +
+              "<p>Ask me about Roshna's projects, skills, experience, and how to reach her.</p>";
+            messagesEl.appendChild(card);
+            showSuggestions();
+          }
+          setTimeout(function () { inputEl.focus(); }, 300);
+        }
+
+        function closePanel() {
+          isOpen = false;
+          panel.classList.remove("ai-open");
+          setTimeout(function () { toggle.style.visibility = "visible"; }, 100);
+        }
+
+        function addMsg(text, who) {
+          var row = document.createElement("div");
+          row.className = "ai-row ai-row-" + who;
+          var ava = document.createElement("div");
+          ava.className = "ai-row-ava";
+          ava.textContent = who === "bot" ? "🤖" : "🧑";
+          var bub = document.createElement("div");
+          bub.className = "ai-bubble";
+          bub.innerHTML = text;
+          row.appendChild(ava);
+          row.appendChild(bub);
+          messagesEl.appendChild(row);
+          messagesEl.scrollTop = messagesEl.scrollHeight;
+        }
+
+        function showTyping() {
+          var row = document.createElement("div");
+          row.className = "ai-row ai-row-bot";
+          row.id = "aiTypingRow";
+          var ava = document.createElement("div");
+          ava.className = "ai-row-ava";
+          ava.textContent = "🤖";
+          var dots = document.createElement("div");
+          dots.className = "ai-dots ai-bubble";
+          dots.style.background = "var(--accent-soft)";
+          dots.style.border = "1px solid var(--line)";
+          dots.innerHTML = "<span></span><span></span><span></span>";
+          row.appendChild(ava);
+          row.appendChild(dots);
+          messagesEl.appendChild(row);
+          messagesEl.scrollTop = messagesEl.scrollHeight;
+        }
+
+        function hideTyping() {
+          var t = document.getElementById("aiTypingRow");
+          if (t) t.remove();
+        }
+
+        toggle.addEventListener("click", openPanel);
+        closeBtn.addEventListener("click", closePanel);
+        sendBtn.addEventListener("click", send);
+        inputEl.addEventListener("keydown", function (e) {
+          if (e.key === "Enter") send();
+        });
+        inputEl.addEventListener("input", function () {
+          sendBtn.disabled = !inputEl.value.trim();
+        });
+        sendBtn.disabled = true;
+
+             document.addEventListener("keydown", function (e) {
+          if (e.key === "Escape" && isOpen) closePanel();
+        });
+      })();   // <-- add this
     </script>
   </body>
 </html>
