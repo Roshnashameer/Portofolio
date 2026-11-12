@@ -1,0 +1,960 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Blog | Roshna N</title>
+    <meta
+      name="description"
+      content="How I built Ask Roshna AI, a client-side RAG chatbot for my portfolio, and the bugs I hit along the way."
+    />
+    <meta name="theme-color" content="#0f766e" />
+    <link
+      rel="canonical"
+      href="https://roshna-portfolio-123.vercel.app/blogs.html"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&family=Poppins:wght@500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --font-head:
+          "Poppins", system-ui, -apple-system, "Segoe UI", Roboto, Arial,
+          sans-serif;
+        --font-mono:
+          "JetBrains Mono", ui-monospace, Consolas, "Courier New", monospace;
+        --font-body:
+          "Inter", system-ui, -apple-system, "Segoe UI", Roboto, Arial,
+          sans-serif;
+        --bg: #f7f8fa;
+        --surface: #fff;
+        --text: #1b2430;
+        --muted: #5b6676;
+        --line: #e2e6ec;
+        --accent: #0f766e;
+        --accent-soft: #d9f2ee;
+        --code: #0f172a;
+        --shadow:
+          0 1px 2px rgba(16, 24, 40, 0.06), 0 8px 24px rgba(16, 24, 40, 0.06);
+      }
+      @media (prefers-color-scheme: dark) {
+        :root:not([data-theme="light"]) {
+          --bg: #0e1319;
+          --surface: #161d26;
+          --text: #e8edf3;
+          --muted: #9aa6b5;
+          --line: #263140;
+          --accent: #2dd4bf;
+          --accent-soft: #12332f;
+          --code: #0a0f15;
+          --shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 8px 24px rgba(0, 0, 0, 0.3);
+        }
+      }
+      :root[data-theme="dark"] {
+        --bg: #0e1319;
+        --surface: #161d26;
+        --text: #e8edf3;
+        --muted: #9aa6b5;
+        --line: #263140;
+        --accent: #2dd4bf;
+        --accent-soft: #12332f;
+        --code: #0a0f15;
+        --shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 8px 24px rgba(0, 0, 0, 0.3);
+      }
+      * {
+        box-sizing: border-box;
+      }
+      html {
+        scroll-behavior: smooth;
+      }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--text);
+        font-family: var(--font-body);
+        line-height: 1.7;
+        -webkit-font-smoothing: antialiased;
+      }
+      a {
+        color: var(--accent);
+        text-decoration: none;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
+      .wrap {
+        max-width: 760px;
+        margin: 0 auto;
+        padding: 0 20px;
+      }
+      header.nav {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        background: color-mix(in srgb, var(--bg) 88%, transparent);
+        backdrop-filter: blur(8px);
+        border-bottom: 1px solid var(--line);
+      }
+      .nav .wrap {
+        max-width: 1040px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 60px;
+      }
+      .logo {
+        font-family: var(--font-head);
+        font-weight: 700;
+        color: var(--text);
+      }
+      .logo span {
+        color: var(--accent);
+      }
+      .nav-r {
+        display: flex;
+        align-items: center;
+        gap: 18px;
+        font-size: 15px;
+      }
+      .nav-r a {
+        color: var(--muted);
+      }
+      .nav-r a:hover {
+        color: var(--text);
+        text-decoration: none;
+      }
+      .theme-toggle {
+        width: 38px;
+        height: 38px;
+        border-radius: 10px;
+        border: 1px solid var(--line);
+        background: var(--surface);
+        color: var(--muted);
+        cursor: pointer;
+        font-size: 16px;
+      }
+      .theme-toggle:hover {
+        color: var(--accent);
+        border-color: var(--accent);
+      }
+      .hero {
+        padding: 64px 0 28px;
+      }
+      .eyebrow {
+        display: inline-block;
+        font: 600 13px var(--font-body);
+        color: var(--accent);
+        background: var(--accent-soft);
+        padding: 4px 12px;
+        border-radius: 999px;
+        margin-bottom: 16px;
+      }
+      h1,
+      h2,
+      h3 {
+        font-family: var(--font-head);
+        line-height: 1.2;
+        letter-spacing: -0.01em;
+      }
+      .hero h1 {
+        font-size: clamp(32px, 6vw, 48px);
+        margin: 0 0 10px;
+      }
+      .hero p {
+        color: var(--muted);
+        font-size: 18px;
+        margin: 0;
+      }
+      .term {
+        font-family: var(--font-mono);
+        font-size: 14px;
+        color: var(--muted);
+        margin-top: 14px;
+      }
+      .term b {
+        color: var(--accent);
+      }
+      .list {
+        display: grid;
+        gap: 16px;
+        margin: 28px 0 8px;
+      }
+      .post-card {
+        display: block;
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        padding: 22px;
+        box-shadow: var(--shadow);
+        color: var(--text);
+        transition:
+          transform 0.18s,
+          border-color 0.18s;
+      }
+      .post-card:hover {
+        transform: translateY(-3px);
+        border-color: var(--accent);
+        text-decoration: none;
+      }
+      .post-card h3 {
+        margin: 6px 0 8px;
+        font-size: 20px;
+      }
+      .post-card p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 15px;
+      }
+      .meta {
+        font: 500 12.5px var(--font-mono);
+        color: var(--muted);
+      }
+      .chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 14px;
+      }
+      .chip {
+        font: 600 12.5px var(--font-mono);
+        padding: 4px 11px;
+        border-radius: 999px;
+        background: var(--accent-soft);
+        color: var(--accent);
+      }
+      .soon {
+        border: 1px dashed var(--line);
+        border-radius: 14px;
+        padding: 18px 22px;
+        color: var(--muted);
+        font-size: 15px;
+      }
+      article {
+        padding: 36px 0 64px;
+        border-top: 1px solid var(--line);
+        margin-top: 36px;
+      }
+      article h2 {
+        font-size: clamp(26px, 4.5vw, 36px);
+        margin: 8px 0 12px;
+      }
+      article h3 {
+        font-size: 21px;
+        margin: 38px 0 8px;
+      }
+      article h3::before {
+        content: "// ";
+        color: var(--accent);
+        font-family: var(--font-mono);
+        font-weight: 500;
+        font-size: 0.8em;
+      }
+      article p,
+      article li {
+        color: var(--muted);
+        font-size: 17px;
+      }
+      article p b,
+      article li b {
+        color: var(--text);
+      }
+      article ul,
+      article ol {
+        padding-left: 22px;
+      }
+      article li {
+        margin-bottom: 6px;
+      }
+      code {
+        font-family: var(--font-mono);
+        font-size: 0.9em;
+        background: var(--accent-soft);
+        color: var(--accent);
+        padding: 1px 6px;
+        border-radius: 5px;
+      }
+      pre {
+        background: var(--code);
+        color: #e2e8f0;
+        border-radius: 12px;
+        padding: 16px 18px;
+        overflow-x: auto;
+        font: 14px/1.6 var(--font-mono);
+        border: 1px solid var(--line);
+      }
+      pre code {
+        background: none;
+        color: inherit;
+        padding: 0;
+        font-size: inherit;
+      }
+      .callout {
+        background: var(--accent-soft);
+        border-left: 4px solid var(--accent);
+        border-radius: 8px;
+        padding: 14px 18px;
+        margin: 22px 0;
+      }
+      .callout p {
+        margin: 0;
+        color: var(--text);
+        font-size: 16px;
+      }
+      .bug {
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        padding: 16px 20px;
+        margin: 14px 0;
+      }
+      .bug h4 {
+        margin: 0 0 6px;
+        font: 600 16px var(--font-head);
+      }
+      .bug p {
+        margin: 0;
+        font-size: 15.5px;
+      }
+      .cta {
+        text-align: center;
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        padding: 26px;
+        margin-top: 40px;
+        box-shadow: var(--shadow);
+      }
+      .cta p {
+        margin: 0 0 14px;
+      }
+      .btn {
+        display: inline-block;
+        padding: 11px 24px;
+        border-radius: 999px;
+        font: 600 15px var(--font-head);
+        border: 2px solid var(--accent);
+        color: var(--accent);
+      }
+      .btn:hover {
+        background: var(--accent-soft);
+        text-decoration: none;
+      }
+      footer {
+        border-top: 1px solid var(--line);
+        padding: 26px 0 40px;
+        text-align: center;
+        color: var(--muted);
+        font-size: 14px;
+      }
+      :focus-visible {
+        outline: 2px solid var(--accent);
+        outline-offset: 2px;
+        border-radius: 4px;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        html {
+          scroll-behavior: auto;
+        }
+        .post-card {
+          transition: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="nav">
+      <div class="wrap">
+        <a class="logo" href="index.html">Roshna<span> N</span></a>
+        <div class="nav-r">
+          <a href="index.html#projects">Projects</a>
+          <a href="index.html#contact">Contact</a>
+          <button
+            class="theme-toggle"
+            id="themeToggle"
+            aria-label="Toggle dark mode"
+            title="Toggle theme"
+          >
+            ◐
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <main class="wrap">
+      <section class="hero">
+        <span class="eyebrow">Blog</span>
+        <h1>Notes from building things.</h1>
+        <p>Short write-ups on what I build, what broke, and what I learned.</p>
+        <div class="term"><b>$</b> ls ./posts</div>
+      </section>
+
+      <div class="list">
+        <a class="post-card" href="#ask-roshna-ai">
+          <div class="meta">Nov 2026 · 6 min read</div>
+          <h3>
+            How I built “Ask Roshna AI”, a portfolio chatbot with no API key
+          </h3>
+          <p>
+            A client-side RAG-style assistant on a static site: the knowledge
+            base, the retrieval logic, three bugs that broke it, and how I plan
+            to upgrade it to a real LLM.
+          </p>
+          <div class="chips">
+            <span class="chip">JavaScript</span><span class="chip">RAG</span
+            ><span class="chip">Chatbot</span><span class="chip">UI</span>
+          </div>
+        </a>
+        <a class="post-card" href="#fastapi-rag-backend">
+          <div class="meta">Nov 2026 · 7 min read</div>
+          <h3>
+            From client-side RAG to a real FastAPI backend — how I upgraded Ask
+            Roshna AI
+          </h3>
+          <p>
+            Moving the retrieval and generation logic off the browser and onto a
+            FastAPI server: the architecture, the OpenAI integration, and what
+            graceful fallback actually looks like.
+          </p>
+          <div class="chips">
+            <span class="chip">FastAPI</span><span class="chip">Python</span
+            ><span class="chip">RAG</span><span class="chip">OpenAI</span>
+          </div>
+        </a>
+        <a class="post-card" href="#building-this-portfolio">
+          <div class="meta">Nov 2026 · 5 min read</div>
+          <h3>
+            How I built this portfolio — every design decision, animation, and
+            mistake
+          </h3>
+          <p>
+            Dark mode, a floating 3D scene, an animated preloader, scroll
+            reveals, and a cursor sparkle trail — all in a single static HTML
+            file. Here is how and why.
+          </p>
+          <div class="chips">
+            <span class="chip">HTML</span><span class="chip">CSS</span
+            ><span class="chip">JavaScript</span
+            ><span class="chip">Design</span>
+          </div>
+        </a>
+        <div class="soon">
+          More posts coming soon: lessons from leading a backend at Faircode,
+          and my M.Sc. Data Science journey.
+        </div>
+      </div>
+
+      <article id="ask-roshna-ai">
+        <div class="meta">Nov 2026 · 6 min read · by Roshna N</div>
+        <h2>
+          How I built “Ask Roshna AI”, a portfolio chatbot with no API key
+        </h2>
+        <p>
+          Recruiters and hiring managers skim portfolios. I wanted a way for
+          them to ask a question like “Has she used FastAPI?” and get a straight
+          answer in a second, instead of hunting through sections. So I built a
+          small assistant into my site. This is how it went, including the parts
+          that broke.
+        </p>
+
+        <h3>The constraint: a static site</h3>
+        <p>
+          My portfolio is a static page on Vercel. Calling an LLM API directly
+          from the browser means shipping an API key to every visitor, which is
+          a bad idea. A backend would fix that, but I wanted something that
+          works on day one. So I started with <b>client-side retrieval</b>: no
+          server, no key, and answers that only come from facts I wrote myself.
+        </p>
+
+        <div class="callout">
+          <p>
+            <b>Honest label:</b> this is keyword retrieval over a hand-written
+            knowledge base. It is closer to a smart FAQ than a full
+            vector-search RAG system, but it follows the same
+            retrieve-then-answer shape, and that made it easy to upgrade later.
+          </p>
+        </div>
+
+        <h3>The design in three steps</h3>
+        <ol>
+          <li>
+            <b>Knowledge base.</b> An array of entries, each with an
+            <code>id</code>, a list of <code>keywords</code> and an
+            <code>answer()</code> function that returns a short HTML snippet
+            (projects, skills, experience, education, contact and so on).
+          </li>
+          <li>
+            <b>Retrieval.</b> Tokenize the question, drop stop words, then score
+            every entry by keyword overlap and take the best one.
+          </li>
+          <li>
+            <b>Response.</b> Return that entry’s answer, or a friendly fallback
+            listing what the bot can talk about.
+          </li>
+        </ol>
+        <pre><code>function retrieve(question) {
+  var tokens = tokenize(question);          // lowercase, strip stop words
+  var scored = KB.map(function (entry) {
+    var score = 0;
+    tokens.forEach(function (t) {
+      entry.keywords.forEach(function (kw) {
+        if (kw === t) score += 3;           // exact match
+        else if (kw.length &gt; 3 &amp;&amp; t.length &gt; 3 &amp;&amp;
+          (kw.indexOf(t) &gt; -1 || t.indexOf(kw) &gt; -1)) score += 1; // fuzzy
+      });
+    });
+    return { entry: entry, score: score };
+  });
+  scored.sort(function (a, b) { return b.score - a.score; });
+  return scored[0].score &gt; 0 ? scored[0].entry : null;
+}</code></pre>
+        <p>
+          Exact keyword hits are worth three points and partial matches one. It
+          is simple, fast, and easy to debug when an answer looks wrong.
+        </p>
+
+        <h3>The interface</h3>
+        <p>
+          The chat is a floating button that opens a panel with a welcome card,
+          clickable suggested questions, a typing indicator and a send box. One
+          detail I care about: user text goes through an
+          <code>escapeHtml()</code> step before it is rendered, since answers
+          are inserted as HTML and I don’t want visitors injecting markup into
+          my own page.
+        </p>
+
+        <h3>Three bugs that bit me</h3>
+        <div class="bug">
+          <h4>1. The chat looked completely unstyled</h4>
+          <p>
+            My HTML and JavaScript used <code>ai-*</code> class names while the
+            CSS defined <code>rn-*</code> ones. Nothing matched, so the widget
+            rendered as plain text at the bottom of the page. Lesson: pick one
+            naming prefix and search the whole file before shipping.
+          </p>
+        </div>
+        <div class="bug">
+          <h4>2. A missing <code>})();</code></h4>
+          <p>
+            The last script block never closed its wrapper function. That is a
+            syntax error, so none of the chat code ran, and the button did
+            nothing. Lesson: check the browser console first; it told me
+            immediately.
+          </p>
+        </div>
+        <div class="bug">
+          <h4>3. Tiny keywords matched everywhere</h4>
+          <p>
+            Keywords like <code>hi</code>, <code>ui</code> and
+            <code>ai</code> matched inside unrelated words, so the wrong answers
+            came back. The fix was to allow partial matching only for words
+            longer than three characters, as in the code above.
+          </p>
+        </div>
+
+        <h3>Upgrading to a real LLM</h3>
+        <p>
+          I left a hook in the send function: if
+          <code>window.ASK_ROSHNA_API</code> is set, the question is posted to
+          that URL and the reply is shown; if the request fails, it falls back
+          to the local knowledge base. The plan is a small
+          <b>FastAPI</b> endpoint that does real retrieval over my content and
+          calls an LLM, with the key kept safely on the server.
+        </p>
+
+        <h3>What I learned</h3>
+        <ul>
+          <li>
+            Start with the simplest thing that works, but design it so the real
+            version can slot in.
+          </li>
+          <li>
+            Answers are only as good as the knowledge base, so keeping it
+            accurate matters more than clever scoring.
+          </li>
+          <li>
+            Most “AI feature” bugs are ordinary front-end bugs: naming, syntax,
+            and edge cases in string matching.
+          </li>
+        </ul>
+        <p>
+          Next on my list: embeddings and a vector store for proper semantic
+          search, and streaming responses.
+        </p>
+
+        <div class="cta">
+          <p>
+            Want to see it in action? Open the 🤖 button on my portfolio and ask
+            it something.
+          </p>
+          <a class="btn" href="index.html">Back to portfolio</a>
+        </div>
+      </article>
+      <article id="fastapi-rag-backend">
+        <div class="meta">Nov 2026 · 7 min read · by Roshna N</div>
+        <h2>
+          From client-side RAG to a real FastAPI backend — how I upgraded Ask
+          Roshna AI
+        </h2>
+        <p>
+          The first version of my portfolio chatbot worked entirely in the
+          browser: a hand-written knowledge base, a keyword scorer, and a
+          template response — no server, no API key. It was the right starting
+          point, but I always planned to give it a real brain. This post is
+          about how I built that upgrade using <b>FastAPI</b>, <b>OpenAI</b>,
+          and a proper <b>RAG pipeline</b>.
+        </p>
+
+        <h3>Why move to a backend at all?</h3>
+        <p>
+          Three reasons. First, the client-side version could only do keyword
+          matching — it couldn't handle paraphrased questions or give nuanced
+          answers. Second, calling OpenAI directly from the browser would mean
+          shipping an API key to every visitor, which is a non-starter. Third, I
+          wanted a clean hook I could later swap for any LLM without touching
+          the frontend at all.
+        </p>
+
+        <div class="callout">
+          <p>
+            <b>The design goal:</b> the frontend should not know or care whether
+            the answer came from OpenAI, a local model, or a knowledge base. It
+            just posts a question and renders the reply.
+          </p>
+        </div>
+
+        <h3>The API — one endpoint, two steps</h3>
+        <p>
+          The backend is a small FastAPI app with a single POST route at
+          <code>/ask</code>. It accepts a <code>question</code> and an optional
+          <code>history</code> array (for multi-turn context), and returns an
+          <code>answer</code> and a <code>source</code> field so the client
+          knows which path fired.
+        </p>
+        <pre><code>class AskRequest(BaseModel):
+    question: str
+    history: Optional[list] = None   # last N turns
+
+class AskResponse(BaseModel):
+    answer: str
+    source: str  # "openai" or "local-rag"</code></pre>
+        <p>Inside <code>/ask</code>, two things happen in order.</p>
+
+        <h3>Step 1 — Retrieval</h3>
+        <p>
+          I reused the same knowledge base from the client-side version, but
+          moved it to Python. <code>retrieve_context()</code> tokenizes the
+          question, strips stop words, scores every entry by keyword overlap,
+          and returns the top three content blocks. Exact keyword hits score
+          three points; partial overlaps score one.
+        </p>
+        <pre><code>def retrieve_context(query: str, top_k: int = 3) -> list[str]:
+    tokens = tokenize(query)
+    scored = []
+    for entry in KNOWLEDGE_BASE:
+        score = 0
+        for token in tokens:
+            for keyword in entry["keywords"]:
+                if keyword == token:
+                    score += 3
+                elif keyword in token or token in keyword:
+                    score += 1
+        if score > 0:
+            scored.append((score, entry["content"]))
+    scored.sort(key=lambda x: x[0], reverse=True)
+    return [content for _, content in scored[:top_k]]</code></pre>
+        <p>
+          It is still keyword-based, not vector-based, but the retrieval quality
+          is good enough for a focused knowledge base like this. The upgrade
+          path to ChromaDB or pgvector is a one-function swap.
+        </p>
+
+        <h3>Step 2 — Generation</h3>
+        <p>
+          If <code>OPENAI_API_KEY</code> is set, the retrieved context is
+          injected into a system prompt and sent to
+          <code>gpt-4o-mini</code> along with the last four messages of chat
+          history. If the key is missing or the OpenAI call fails, the endpoint
+          returns the raw retrieved context chunks instead — no crash, no empty
+          response.
+        </p>
+        <pre><code>SYSTEM_PROMPT = """You are Ask Roshna AI…
+Answer questions about Roshna using ONLY the context provided below.
+
+Context from Roshna's knowledge base:
+{context}
+"""
+
+messages = [{"role": "system", "content": SYSTEM_PROMPT.format(context=context_text)}]
+if req.history:
+    messages.extend(req.history[-4:])   # last 2 turns
+messages.append({"role": "user", "content": req.question})</code></pre>
+
+        <h3>The fallback chain</h3>
+        <p>
+          I care about this more than the happy path. The backend has three
+          tiers:
+        </p>
+        <ol>
+          <li>
+            OpenAI is available → LLM-generated answer grounded in the retrieved
+            context.
+          </li>
+          <li>
+            OpenAI fails or is not configured → raw retrieved content blocks
+            joined as plain text.
+          </li>
+          <li>
+            Nothing matches in the knowledge base → a friendly "I don't know,
+            but I can help with…" message.
+          </li>
+        </ol>
+        <p>
+          The frontend never sees an error. It always gets an answer of some
+          kind.
+        </p>
+
+        <h3>Connecting the frontend</h3>
+        <p>
+          I left a one-line hook in the client-side chatbot: if
+          <code>window.ASK_ROSHNA_API</code> is set before the script runs, the
+          question is POSTed there and the reply is rendered; if not, it falls
+          back to local matching. So pointing the portfolio at the FastAPI
+          backend is a single assignment:
+        </p>
+        <pre><code>window.ASK_ROSHNA_API = "https://your-api-host/ask";</code></pre>
+        <p>
+          No other frontend changes needed. This is the part I'm most pleased
+          with — the two modes are genuinely independent and the seam between
+          them is invisible to the user.
+        </p>
+
+        <h3>CORS and deployment</h3>
+        <p>
+          The backend reads <code>ALLOWED_ORIGINS</code> from the environment,
+          defaulting to <code>*</code> for local development. In production I'll
+          pin it to the Vercel domain. The app itself can be deployed on any
+          host that runs Python — Railway, Fly.io, or an AWS Lambda behind API
+          Gateway using Mangum.
+        </p>
+
+        <h3>What's next</h3>
+        <ul>
+          <li>
+            Replace keyword scoring with real vector embeddings via the OpenAI
+            embeddings API and store them in <b>pgvector</b> or <b>ChromaDB</b>.
+          </li>
+          <li>
+            Add streaming responses so the answer types out word by word instead
+            of appearing all at once.
+          </li>
+          <li>
+            Cache frequent questions so repeated "Has she used FastAPI?" hits
+            don't cost a token.
+          </li>
+        </ul>
+
+        <div class="cta">
+          <p>
+            Want to see the chatbot live? Open the 🤖 button on my portfolio and
+            ask it something.
+          </p>
+          <a class="btn" href="index.html">Back to portfolio</a>
+        </div>
+      </article>
+
+      <article id="building-this-portfolio">
+        <div class="meta">Nov 2026 · 5 min read · by Roshna N</div>
+        <h2>
+          How I built this portfolio — every design decision, animation, and
+          mistake
+        </h2>
+        <p>
+          Most developer portfolios are either over-engineered React apps or
+          bare-bones single pages. I wanted something in between: fast, static,
+          visually interesting, and something I could actually maintain. Here is
+          every decision I made building it, including the ones I had to undo.
+        </p>
+
+        <h3>One HTML file, no build step</h3>
+        <p>
+          The whole thing — hero, about, skills, experience, projects,
+          education, contact form, AI chatbot — lives in a single
+          <code>index.html</code>. No Webpack, no npm, no bundler. It deploys to
+          Vercel in seconds and loads in under a second on a cold visit. The
+          trade-off is that the CSS and JavaScript are inline, which makes the
+          file long. For a portfolio that one person maintains, that is a fine
+          trade.
+        </p>
+
+        <div class="callout">
+          <p>
+            <b>Rule I followed:</b> every feature has to earn its place. If
+            removing it makes the page simpler without losing information, it
+            goes.
+          </p>
+        </div>
+
+        <h3>Dark mode — system preference first, manual override second</h3>
+        <p>
+          I wanted dark mode to work without a flash of unstyled content. The
+          approach: CSS custom properties for every colour, a
+          <code>prefers-color-scheme</code> media query that swaps them
+          automatically, and a <code>data-theme</code> attribute on
+          <code>&lt;html&gt;</code> for the manual toggle. The toggle reads
+          <code>localStorage</code> and applies the saved preference before the
+          first paint. No JavaScript flash, no white-then-black flicker.
+        </p>
+        <pre><code>try { s = localStorage.getItem("theme") } catch(e) {}
+if (s) root.setAttribute("data-theme", s);</code></pre>
+        <p>
+          The <code>try/catch</code> around <code>localStorage</code> is not
+          paranoia — in some privacy modes it throws. One line saves a confusing
+          bug report.
+        </p>
+
+        <h3>The animated preloader</h3>
+        <p>
+          The loading screen shows <code>$ npm run dev</code> with a blinking
+          cursor and a progress bar. It runs for 1.1 seconds then fades out. The
+          whole effect is CSS — a <code>@keyframes preLoad</code> animation on a
+          bar element and a <code>steps(1)</code> cursor blink. No JavaScript
+          timer needed. I added it because the font loading occasionally caused
+          a layout shift, and the preloader gives the fonts time to arrive
+          without the user seeing the fallback stack.
+        </p>
+
+        <h3>The SVG doodle and 3D scene</h3>
+        <p>
+          The hero right column started as an SVG: a hand-drawn-style
+          illustration of someone coding, with CSS animations for floating,
+          blinking, steam rising from a coffee mug, and a twinkling star. It
+          works everywhere including reduced-motion mode (all animations are
+          gated on <code>prefers-reduced-motion</code>).
+        </p>
+        <p>
+          Later I added a Three.js alternative: six rotating cubes labelled with
+          tech logos (Python, React, Node.js, FastAPI, AWS, MongoDB) orbiting a
+          centre point in 3D space. The page detects WebGL support at runtime —
+          if it works, the 3D scene replaces the SVG; if not, the SVG stays. The
+          progressive enhancement means the page never looks broken on a device
+          that can't do WebGL.
+        </p>
+
+        <h3>Scroll-driven reveals</h3>
+        <p>
+          Sections start with
+          <code>opacity: 0; transform: rotateX(10deg) translateY(40px)</code>.
+          An <code>IntersectionObserver</code> adds an <code>.in</code> class
+          when a section enters the viewport, triggering a CSS transition. I
+          used a 3D rotate-in rather than a simple fade because it looks like
+          the content is "landing" on the page. The whole thing is twelve lines
+          of JavaScript and two CSS rules.
+        </p>
+
+        <h3>The projects section</h3>
+        <p>
+          Projects are filterable by tag. Each card has a
+          <code>data-tags</code> attribute and filter buttons toggle an
+          <code>aria-selected</code> state that drives visibility. The filter
+          logic is a <code>forEach</code> loop — no library needed. Cards
+          animate in with a staggered <code>pop</code> keyframe using a
+          <code>--i</code> CSS custom property as the delay index.
+        </p>
+        <p>
+          One thing I made sure to include: a note that most of my professional
+          work is for industry clients and can't be shown publicly. I'd rather
+          be honest about that than have a recruiter wonder why there are only
+          two GitHub links. The projects I can talk about — the AI Risk
+          Intelligence Platform at SwarmLens and the Sharon Pipes Reward Program
+          at Faircode — are described in detail, with the full tech stack and my
+          specific role.
+        </p>
+
+        <h3>The contact form</h3>
+        <p>
+          Powered by Formspree. It validates client-side (empty
+          name/email/message), shows inline errors in a monospace font to match
+          the developer aesthetic, and replaces the form with a success message
+          on submit. No server needed, no SMTP credentials to manage.
+        </p>
+
+        <h3>Three things I would do differently</h3>
+        <div class="bug">
+          <h4>1. Start with a naming convention</h4>
+          <p>
+            I ended up with a mix of class names from different drafts — some
+            prefixed <code>ai-</code>, some unprefixed. It made the CSS hard to
+            scan. I should have picked a prefix (<code>rn-</code> for Roshna N)
+            and stuck with it from day one.
+          </p>
+        </div>
+        <div class="bug">
+          <h4>2. Separate the chatbot into its own file</h4>
+          <p>
+            The Ask Roshna AI widget is about 300 lines of JavaScript inside a
+            <code>&lt;script&gt;</code> tag. It works fine, but it would be
+            easier to test and iterate on as a separate module loaded with a
+            <code>&lt;script src&gt;</code>.
+          </p>
+        </div>
+        <div class="bug">
+          <h4>3. Write the blog earlier</h4>
+          <p>
+            I added the blog section after the portfolio was already live. If I
+            had planned for it from the start, the navigation and URL structure
+            would have been cleaner from day one instead of being retrofitted.
+          </p>
+        </div>
+
+        <h3>The result</h3>
+        <p>
+          A fully static site deployed on Vercel with no build step, a perfect
+          Lighthouse score, dark mode, a 3D hero scene with graceful fallback, a
+          working AI chatbot with a FastAPI upgrade path, and a blog. It
+          represents how I actually think about building things: start simple,
+          make it work, then layer in the interesting parts.
+        </p>
+
+        <div class="cta">
+          <p>
+            Curious about any specific part? Ask the 🤖 on my portfolio — it
+            knows the whole stack.
+          </p>
+          <a class="btn" href="index.html">Back to portfolio</a>
+        </div>
+      </article>
+    </main>
+    <footer>
+      <div class="wrap">
+        © <span id="yr">2026</span> Roshna N · Kerala, India
+      </div>
+    </footer>
+
+    <script>
+      document.getElementById("yr").textContent = new Date().getFullYear();
+      (function () {
+        var root = document.documentElement,
+          t = document.getElementById("themeToggle"),
+          s = null;
+        try {
+          s = localStorage.getItem("theme");
+        } catch (e) {}
+        if (s) root.setAttribute("data-theme", s);
+        t.addEventListener("click", function () {
+          var cur = root.getAttribute("data-theme"),
+            dark = cur
+              ? cur === "dark"
+              : matchMedia("(prefers-color-scheme: dark)").matches,
+            n = dark ? "light" : "dark";
+          root.setAttribute("data-theme", n);
+          try {
+            localStorage.setItem("theme", n);
+          } catch (e) {}
+        });
+      })();
+    </script>
+  </body>
+</html>

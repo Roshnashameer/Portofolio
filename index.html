@@ -303,7 +303,7 @@
       }
       .doodle {
         width: 100%;
-        max-width: 420px;
+        max-width: 340px;
         height: auto;
         justify-self: center;
         overflow: visible;
@@ -532,10 +532,10 @@
         }
       }
 
-      /* 3D scene */
+      /* 3D scene - smaller when shown with doodle */
       .scene3d {
         width: 100%;
-        max-width: 480px;
+        max-width: 340px;
         aspect-ratio: 1 / 0.92;
         justify-self: center;
         position: relative;
@@ -549,17 +549,24 @@
         height: 100%;
         display: block;
       }
+      /* Both doodle and 3D scene now visible together */
       .hero-grid.has3d .doodle {
-        display: none;
+        max-width: 320px;
+        margin-bottom: 20px;
       }
       .hero-grid.has3d #orbitWrap {
-        display: none;
+        max-width: 320px;
+        margin-bottom: 20px;
+      }
+      .hero-grid.has3d .scene3d {
+        margin-top: 12px;
       }
       .hero-visual {
         justify-self: center;
         display: flex;
         flex-direction: column;
         align-items: center;
+        gap: 20px;
         width: 100%;
         max-width: 480px;
       }
@@ -594,12 +601,12 @@
           grid-template-columns: 1fr;
         }
         .doodle {
-          max-width: 320px;
+          max-width: 280px;
           order: -1;
         }
         .scene3d {
-          max-width: 360px;
-          order: -1;
+          max-width: 300px;
+          order: -2;
         }
       }
       @media (prefers-reduced-motion: reduce) {
@@ -2052,6 +2059,7 @@
               <li><a href="#education">Education</a></li>
               <li><a href="#testimonials">Testimonials</a></li>
               <li><a href="#contact">Contact</a></li>
+              <li><a href="blogs.html">Blog</a></li>
             </ul>
           </nav>
           <button
@@ -2170,7 +2178,6 @@
             <div
               class="scene3d"
               id="scene3d"
-              hidden
               role="img"
               aria-label="Interactive 3D laptop with floating Python, React, Node and AWS cubes"
             ></div>
@@ -3066,7 +3073,7 @@
           }
           renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
           box.appendChild(renderer.domElement);
-          box.hidden = false;
+          // Both doodle and 3D scene now visible - no need to hide doodle
           box.parentElement.classList.add("has3d");
 
           var accentStr =
