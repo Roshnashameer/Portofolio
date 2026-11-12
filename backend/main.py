@@ -19,7 +19,10 @@ from typing import Optional
 
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel
+from pydantic import BaseModel, EmailStr
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
 
 try:
     from openai import OpenAI
@@ -53,6 +56,18 @@ class AskRequest(BaseModel):
 class AskResponse(BaseModel):
     answer: str
     source: str  # "openai" or "local-rag"
+
+
+class ContactRequest(BaseModel):
+    name: str
+    email: EmailStr
+    subject: Optional[str] = ""
+    message: str
+
+
+class ContactResponse(BaseModel):
+    success: bool
+    message: str
 
 
 SYSTEM_PROMPT = """You are Ask Roshna AI, a helpful assistant embedded in Roshna N's portfolio website.
@@ -133,6 +148,113 @@ def generate_local_response(question: str, chunks: list[str]) -> str:
     """Generate a response from retrieved context chunks (no LLM)."""
     # Join the retrieved chunks into a readable answer
     return "\n\n".join(chunks)
+
+
+@app.post("/contact", response_model=ContactResponse)
+def contact(req: ContactRequest):
+    """
+    Handle contact form submissions.
+    Sends email notification to Roshna and optionally to the sender.
+    
+    Required environment variables:
+    - EMAIL_HOST: SMTP server (e.g., smtp.gmail.com)
+    - EMAIL_PORT: SMTP port (e.g., 587 for TLS)
+    - EMAIL_USER: Email account to send from
+    - EMAIL_PASSWORD: Email password or app password
+    - EMAIL_TO: Recipient email (Roshna's email)
+    """
+    try:
+        # Get email configuration from environment
+        email_host = os.getenv("EMAIL_HOST")
+        email_port = int(os.getenv("EMAIL_PORT", "587"))
+        email_user = os.getenv("EMAIL_USER")
+        email_password = os.getenv("EMAIL_PASSWORD")
+        email_to = os.getenv("EMAIL_TO", "roshnasharaf123@gmail.com")
+        
+        if not all([email_host, email_user, email_password]):
+            # If email not configured, just log it
+            print(f"Contact form submission (email not configured):")
+            print(f"From: {req.name} <{req.email}>")
+            print(f"Subject: {req.subject}")
+            print(f"Message: {req.message}")
+            return ContactResponse(
+                success=True,
+                message="Message received! (Email service not configured)"
+            )
+        
+        # Create email message
+        msg = MIMEMultipart("alternative")
+        msg["Subject"] = f"Portfolio Contact: {req.subject or 'New Message'}"
+        msg["From"] = email_user
+        msg["To"] = email_to
+        msg["Reply-To"] = req.email
+        
+        # Email body
+        text_content = f"""
+New contact form submission from your portfolio:
+
+Name: {req.name}
+Email: {req.email}
+Subject: {req.subject or "(no subject)"}
+
+Message:
+{req.message}
+
+---
+This email was sent from your portfolio contact form.
+"""
+        
+        html_content = f"""
+<html>
+  <body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
+    <h2 style="color: #0f766e;">New Portfolio Contact</h2>
+    <table style="border-collapse: collapse; margin: 20px 0;">
+      <tr>
+        <td style="padding: 8px; font-weight: bold;">Name:</td>
+        <td style="padding: 8px;">{req.name}</td>
+      </tr>
+      <tr>
+        <td style="padding: 8px; font-weight: bold;">Email:</td>
+        <td style="padding: 8px;"><a href="mailto:{req.email}">{req.email}</a></td>
+      </tr>
+      <tr>
+        <td style="padding: 8px; font-weight: bold;">Subject:</td>
+        <td style="padding: 8px;">{req.subject or "(no subject)"}</td>
+      </tr>
+    </table>
+    <div style="background-color: #f7f8fa; padding: 15px; border-left: 4px solid #0f766e; margin: 20px 0;">
+      <h3 style="margin-top: 0;">Message:</h3>
+      <p>{req.message.replace(chr(10), '<br>')}</p>
+    </div>
+    <hr style="border: none; border-top: 1px solid #e2e6ec; margin: 30px 0;">
+    <p style="color: #999; font-size: 12px;">This email was sent from your portfolio contact form.</p>
+  </body>
+</html>
+"""
+        
+        # Attach both plain text and HTML versions
+        part1 = MIMEText(text_content, "plain")
+        part2 = MIMEText(html_content, "html")
+        msg.attach(part1)
+        msg.attach(part2)
+        
+        # Send email
+        with smtplib.SMTP(email_host, email_port) as server:
+            server.starttls()
+            server.login(email_user, email_password)
+            server.send_message(msg)
+        
+        return ContactResponse(
+            success=True,
+            message="Message sent successfully! Roshna will get back to you soon."
+        )
+        
+    except Exception as e:
+        print(f"Error sending contact form email: {e}")
+        raise HTTPException(
+            status_code=500,
+            detail="Failed to send message. Please try emailing directly."
+        )
 
 
 if __name__ == "__main__":
